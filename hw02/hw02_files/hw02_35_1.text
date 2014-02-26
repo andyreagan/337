@@ -1,0 +1,12 @@
+[('cat', 'cat'),
+ ('cp', 'cp -i'),
+ ('ldir', 'ls -F -G -l %l | grep /$'),
+ ('lf', 'ls -F -l -G %l | grep ^-'),
+ ('lk', 'ls -F -l -G %l | grep ^l'),
+ ('ll', 'ls -F -l -G'),
+ ('ls', 'ls -F -G'),
+ ('lx', 'ls -F -l -G %l | grep ^-..x'),
+ ('mkdir', 'mkdir'),
+ ('mv', 'mv -i'),
+ ('rm', 'rm -i'),
+ ('rmdir', 'rmdir')]
