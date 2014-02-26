@@ -1,0 +1,4 @@
+for y0=1,a=1, the sign of global error is positive
+for y0=-1,a=1, the sign of global error is negative
+for y0=1,a=-1, the sign of global error is positive
+for y0=-1,a=-1, the sign of global error is negative
