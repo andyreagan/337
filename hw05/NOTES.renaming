@@ -1,0 +1,6 @@
+# copy shared methods into local named_methods directory
+mkdir named_methods
+cp {../shared_methods/my,named_methods/andy}_ME.m
+
+# make all the eps into pdf
+\ls -1 *.eps | xargs -n 1 epstopdf
