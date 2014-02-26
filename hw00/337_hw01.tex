@@ -1,0 +1,80 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amsthm,amssymb,fullpage,graphicx}
+\author{Andy Reagan}
+\title{Math 337 Assignment 1}
+
+     \def\NN{\mathbb{N} }
+     \def\ZZ{\mathbb{Z} }
+     \def\QQ{\mathbb{Q} }
+     \def\RR{\mathbb{R} }
+     \def\CC{\mathbb{C} }
+     \def\f{\frac }
+     \def\b{\begin }
+     \def\e{\end }
+     \def\Log{\text{Log} \,}
+     \def\Re{\text{Re} \, }
+     \newcommand{\dee}[1]{\mbox{d}#1}
+     \newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}}
+     \newcommand{\partialdiff}[2]{\frac{\partial #1}{\partial #2}}
+     \newcommand{\pdiffsq}[2]{\frac{\partial^2 #1}{{\partial #2}^2}}
+     \newcommand{\pdiffcu}[2]{\frac{\partial^3 #1}{{\partial #2}^3}}
+     \newcommand{\diff}[2]{\frac{{\rm d}#1}{{\rm d}#2}}
+     \newcommand{\diffsq}[2]{\frac{{\rm d}^{2}#1}{{\rm d} {#2}^2}}
+     \newcommand{\tdiff}[2]{\mbox{d} #1/\mbox{d} #2}
+     \newcommand{\tdiffsq}[2]{\mbox{d}^{2} #1/\mbox{d} {#2}^2}
+     \newcommand{\tpdiff}[2]{\partial #1/\partial #2}
+     \newcommand{\tpdiffsq}[2]{\partial^2 #1/\partial {#2}^2}
+     \newcommand{\postdee}[1]{\,\mbox{d}#1}
+     \newcommand{\rhoref}{\rho_{\text{ref}}}
+     \newcommand{\dphi}{\text{d}\phi}
+
+\begin{document}
+\maketitle
+\begin{enumerate}
+
+\item Find the explicit form of the cubic term (i.e. the term with $(\Delta x)^n (\Delta y )^m ), n+m = 3$) in expansion (0.6).
+
+{\bf Solution:} The explicit form is given by (assuming the equality of mixed partials):
+\begin{align*} & \f{1}{3!} \left ( \Delta x \pdiff{}{\overline{x}} + \Delta y \pdiff{}{\overline{y}} \right ) ^3 \left. f(\overline{x},\overline{y} ) \right | _{\overline{x}=x_0,\overline{y} = y_0} \\
+& = \f{1}{3!} \left ( (\Delta x)^3 \pdiffcu{}{\overline{x}} + 3\Delta x (\Delta y)^2 \pdiffsq{}{\overline{y}} \pdiff{}{\overline{x}} + 3\Delta y (\Delta x)^2 \pdiffsq{}{\overline{x}} \pdiff{}{\overline{y}} + (\Delta y)^3 \pdiffcu{}{\overline{y}} \right ) \left. f(\overline{x},\overline{y} ) \right | _{\overline{x}=x_0,\overline{y} = y_0} \\
+& = \f{1}{3!} \left ( (\Delta x)^3 f_{xxx} (x_0,y_0) + 3\Delta x (\Delta y)^2 f_{yyx} (x_0,y_0) + 3\Delta y (\Delta x)^2 f_{xxy}(x_0,y_0) + (\Delta y)^3 f_{yyy}(x_0,y_0) \right )  .\end{align*}
+
+\item Find the Lipschitz constant $L$ for:\\
+(a) $f(x,y) = xy^2$ on $R: 0 \leq x \leq 3, 1\leq y \leq 5$;\\
+(b) $f(x,y) = x + |\sin 2y |$ on $R: 0 \leq x \leq 3, -\pi\leq y \leq \pi$;
+
+{\bf Solution:} (a)We have that in general $L = \max _R | f_y (x,y) |$ where $f_y = 2xy$ such that $L = 2\cdot 3\cdot 5 = 30$ here.\\
+(b)Again let $L = \max _{R'} | f_y (x,y) |$ where $R'$ is the interection of $R$ and the domain of $f_y$.
+Then we have that $f_y = 1 + \max | (\pm \cos y) |$ so $L = 2$.
+
+\item Solve the IVP \[ y' = 2y + e^{3x} , ~~ y(-1) = 4 .\]
+
+{\bf Solution:} We can solve this using ``variation of parameters''.
+We first solve the homogeneous ODE
+\[ y_\text{hom}' = 2 y_\text{hom} \]
+to obtain $y = e^{2(x+1)}$. Putting this homogeneous solution (times $c$) into the nonhomogenous problem for $y$ we have
+\[ c'y_\text{hom} = e^{3x} \]
+such that
+\[ c = \int _{-1} ^x e^{3z} e^{-2(z+1)} dz = \int _{-1} ^x e^{z-2} dz  = e^{x-2} - e^{-3}\]
+and therefore the solution is given by
+\[ y = e^{2x+2} \left ( 4  + e^{x-2} - e^{-3} \right ) = 4e^{2x+2}  + e^{3x} - e^{2x-1}. \]
+
+\item Find \[ \lim _{h\to 0} \left ( \f{1}{1-2h} \right ) ^{\pi / h} .\]
+
+{\bf Solution:} First take exponential of the natural logarithm of the limit.
+This gives us the form
+\[ e^{\lim _{h\to 0} (\pi /h )\log \left ( \f{1}{1-2h} \right )} .\]
+Pulling out the constant $\pi$ and using L'Hopital's rule on the remaining limit, we have
+\[ e^{\pi \lim _{h\to 0} 2 / \left ( 1-2h \right ) } .\]
+The constant 2 comes out of the limit and we see that as $h\to 0$ the remaining limit goes to 1.
+Alternatively, let $h=1/n$ and as $n\to \infty$ we see the same.
+Therefore, we have that
+\[ \lim _{h\to 0} \left ( \f{1}{1-2h} \right ) ^{\pi / h}  = e^{2\pi} .\]
+
+Alternativy, we have that the limit is of the form
+\[ \lim _{h\to 0} (1 + ah ) ^{b/h} \]
+for $a=-2$ and $b=-\pi$. We then know from the notes that this limit is equal to
+\[ e^{ab} ~~\to~~ e^{2\pi} .\]
+\end{enumerate}
+
+\end{document}
