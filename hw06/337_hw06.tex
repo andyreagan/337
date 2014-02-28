@@ -83,39 +83,41 @@ The first BC simply gives us that $B = -\f{1}{(\pi+\epsilon)^2}$.
 The second BC is more complicated, so I write it out (using the appropriate trig identities followed by the Maclaurin series):
 \begin{align*} 0 &= y(1) = A \sin (\pi+\epsilon) -\f{1}{(\pi+\epsilon)^2} \cos (\pi+\epsilon) + \f{1}{(\pi+\epsilon)^2}\\
 &= -A \sin \epsilon + \f{\cos \epsilon }{(\pi+\epsilon)^2} + \f{1}{(\pi+\epsilon)^2}\\
-&= -A \epsilon - \f{\epsilon^2 }{2(\pi+\epsilon)^2} + \f{1}{(\pi+\epsilon)^2} + O(\epsilon ^3)\end{align*}
-Dropping the $O(\epsilon ^3)$ terms and solving this for $A$, we have
-\begin{align*}A \approx \f{2 + \epsilon ^2 }{2\epsilon (\pi+\epsilon)^2}\end{align*}
-We observe here that for $\epsilon$ small, $A$ is very large, and very sensitive to the value of epsilon.
-As $\epsilon \to 0$, we have $A \to 2/0 \to \infty$.\\
+&= -A \epsilon + \f{1 }{(\pi+\epsilon)^2} + \f{1}{(\pi+\epsilon)^2} + O(\epsilon ^3)\\
+&\simeq -A \epsilon + \f{2}{(\pi+\epsilon)^2} \end{align*}
+Solving this for $A$, we have
+\begin{align*}A \simeq \f{2}{\epsilon (\pi+\epsilon)^2}\end{align*}
+We observe here that for $\epsilon$ small, $A$ is very large, and very sensitive to the value of epsilon and behaves as $1/\epsilon$.
+As $\epsilon \to 0$, we have $A \to \infty$.\\
 
+%% Alternatively, we can write this as a linear system
+%% \begin{align*}\left ( \begin{array}{cc} 0 & 1 \\ -\epsilon & 1 \end{array} \right ) \left ( \begin{array}{c} A \\ B \end{array} \right ) = \left ( \begin{array}{c} -\f{1}{(\pi+\epsilon)^2} \\ -\f{1}{(\pi+\epsilon)^2} \end{array} \right ) \end{align*}
+%% The condition number of solving this system (the ratio of the singular values) is given by the eigenvalues of the LHS matrix multiplied by its transpose.
+%% That is, we compute the eigenvalues of 
+%% \begin{align*}\left ( \begin{array}{cc} 0 & -\epsilon  \\ 1 & 1 \end{array} \right )\left ( \begin{array}{cc} 0 & 1 \\ -\epsilon & 1 \end{array} \right ) = \left ( \begin{array}{cc} \epsilon ^2  & -\epsilon \\ -\epsilon & 2 \end{array} \right ) \end{align*}
 
-Alternatively, we can write this as a linear system
-\begin{align*}\left ( \begin{array}{cc} 0 & 1 \\ -\epsilon & -\epsilon /2 \end{array} \right ) \left ( \begin{array}{c} A \\ B \end{array} \right ) = \left ( \begin{array}{c} -\f{1}{(\pi+\epsilon)^2} \\ -\f{1}{(\pi+\epsilon)^2} \end{array} \right ) \end{align*}
-The condition number of solving this system (the ratio of the singular values) is given by the eigenvalues of the LHS matrix multiplied by its transpose.
-That is, we compute the eigenvalues of 
-\begin{align*}\left ( \begin{array}{cc} 0 & -\epsilon  \\ 1 & -\epsilon /2 \end{array} \right )\left ( \begin{array}{cc} 0 & 1 \\ -\epsilon & -\epsilon /2 \end{array} \right ) = \left ( \begin{array}{cc} \epsilon ^2  & \epsilon ^3 /2 \\ \epsilon^3 /2 & 1  -\epsilon^4 /4 \end{array} \right ) \end{align*}
-We find
-\[ \lambda _{1,2} = \f{4+4\epsilon^2+\epsilon^4+\sqrt{16-32\epsilon^2+24\epsilon^4+8\epsilon^6+\epsilon^8}}{4+4\epsilon^2+\epsilon^4-\sqrt{16-32\epsilon^2+24\epsilon^4+8\epsilon^6+\epsilon^8}} \]
-This is not very helpful, so I make a plot of this for $\epsilon \in [0,0.1]$.
-We see the same as above, for small $\epsilon$ the condition number of the matrix explodes, making this problem ill-posed.
-
-\begin{figure}[h!]
-  \centering
-    \includegraphics[width=0.5\textwidth]{andy_hw06_prb2_01.png}
-  \caption{Condition number of the linear BVP for small $\epsilon$.}
-\end{figure}
-
-\lstinputlisting[language=Matlab]{andy_hw06_prb2.m}
-
-\end{enumerate}
+%% \[ \lambda _{1,2} = \f{4+4\epsilon^2+\epsilon^4+\sqrt{16-32\epsilon^2+24\epsilon^4+8\epsilon^6+\epsilon^8}}{4+4\epsilon^2+\epsilon^4-\sqrt{16-32\epsilon^2+24\epsilon^4+8\epsilon^6+\epsilon^8}} \]
+%% This is not very helpful, so I make a plot of this for $\epsilon \in [0,0.1]$.
+%% We see the same as above, for small $\epsilon$ the condition number of the matrix explodes, making this problem ill-posed.
 
 %% \begin{figure}[h!]
 %%   \centering
-%%     \includegraphics[width=0.5\textwidth]{andy_hw04_prb02_01.png}
-%%   \caption{Stability of the cRK method.}
+%%     \includegraphics[width=0.5\textwidth]{andy_hw06_prb2_01.png}
+%%   \caption{Condition number of the linear BVP for small $\epsilon$.}
 %% \end{figure}
 
-%% \lstinputlisting[language=Matlab]{andy_hw04_prb04.m}
+%% \lstinputlisting[language=Matlab]{andy_hw06_prb2.m}
+
+\end{enumerate}
+
+%% %% \begin{figure}[h!]
+%% %%   \centering
+%% %%     \includegraphics[width=0.5\textwidth]{andy_hw04_prb02_01.png}
+%% %%   \caption{Stability of the cRK method.}
+%% %% \end{figure}
+
+%% %% \lstinputlisting[language=Matlab]{andy_hw04_prb04.m}
 
 \end{document}
+
+
