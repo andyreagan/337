@@ -101,6 +101,74 @@ I found it easiest to write a ME function that goes backwards.
   \caption{Solution of the BVP with the shooting method. Here yp denotes $y'$ and ypp denotes $y''$.}
 \end{figure}
 
+\item Solve the BVP
+\begin{align*} y'' = 30^2 (y - 1 + 2x), y(0) = 1, y(1.62) = -2.24\end{align*}
+by the usual (i.e., not multiple) shooting method.
+Use any appropriate IVP-solving method and any reasonable value for $h$.
+Plot your numerical solution along with the exact solution, found in the notes.
+
+\bigskip
+\textbf{Solution:} My code and a solution plot follow.
+
+\lstinputlisting[language=Matlab]{andy_hw07_prb04.m}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{andy_hw07_prb04_01.pdf}
+  \caption{Solution of the BVP with the (regular) shooting method.}
+\end{figure}
+
+\item Solve the nonlinear BVP
+\begin{align*} y'' = \f{y^2}{2+x}, y(0) = 1, y(2) = 1\end{align*}
+following the outline given in Sec. 7.5.
+Find (and, of course, plot) the solutions of this BVP corresponding to both $\overline{\theta}$ and $\overline{\overline{\theta}}$.
+
+\bigskip
+\textbf{Solution:} My code and a solution plot follow.
+
+\lstinputlisting[language=Matlab]{andy_hw07_prb05.m}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{andy_hw07_prb05_02.pdf}
+  \caption{Solution of the BVP with the (regular) shooting method corresponding to $\overline{\theta}$.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{andy_hw07_prb05_01.pdf}
+  \caption{Solution of the BVP with the (regular) shooting method corresponding to $\overline{\overline{\theta}}$.}
+\end{figure}
+
+
+\item Solve the eigenvalue problem
+\begin{align*} y'' + (2 \text{sech}^2 x - \lambda^2)y = 0, x \in (-\infty,\infty), y(|x|\to \infty) \to 0.\end{align*}
+As is explained in the notes, solve the IVP on the interval $[-R,R]$ for some reasonable large $R$ (say $R = 10$).
+Choose $y(-R) = \text{exp} [-cR]$ and $y'(-R) =\lambda v(-R)$, where the constant $c$ is of order one (so you may just take $c=1$).
+The follow the algorithm outlined in the notes.
+
+\bigskip
+\textbf{Solution:} My code and a solution plot follow.
+I find that the method in the notes of ``sweeping'' values of $\lambda$ does not produce good results within the realm where this search is possible.
+This could be due to error in my solving method.
+A more efficient implementation, using the secant method on $y(R) = f = 0$ produces satisfactory results.
+
+\lstinputlisting[language=Matlab]{andy_hw07_prb06.m}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{andy_hw07_prb06_01.pdf}
+  \caption{Solution of the eigenvalue problem with the shooting method, by scanning.}
+\end{figure}
+
+\lstinputlisting[language=Matlab]{andy_hw07_prb06_secant.m}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{andy_hw07_prb06_02.pdf}
+  \caption{Solution of the eigenvalue problem with the shooting method, by applying the secant method on finding the zero of $f$.}
+\end{figure}
+
 \begin{align*} \end{align*}
 
 \end{enumerate}
@@ -112,5 +180,28 @@ I found it easiest to write a ME function that goes backwards.
 %% \end{figure}
 
 %% \lstinputlisting[language=Matlab]{andy_hw04_prb04.m}
+
+\clearpage
+\pagebreak
+{\huge Appendix 1: ODE Functions}
+\lstinputlisting[language=Matlab]{andy_hw07_prb01_ODE.m}
+\lstinputlisting[language=Matlab]{andy_hw07_prb01_ODEh.m}
+
+\lstinputlisting[language=Matlab]{andy_hw07_prb02_ODE.m}
+\lstinputlisting[language=Matlab]{andy_hw07_prb02_ODEh.m}
+
+\lstinputlisting[language=Matlab]{andy_hw07_prb04_ODE.m}
+\lstinputlisting[language=Matlab]{andy_hw07_prb04_ODEh.m}
+
+\lstinputlisting[language=Matlab]{andy_hw07_prb05_ODE.m}
+\lstinputlisting[language=Matlab]{andy_hw07_prb06_ODE.m}
+
+
+\clearpage
+\pagebreak
+{\huge Appendix 2: Numerical Methods}
+
+\lstinputlisting[language=Matlab]{andy_ME.m}
+\lstinputlisting[language=Matlab]{andy_MEr.m}
 
 \end{document}

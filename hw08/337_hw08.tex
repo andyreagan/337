@@ -1,0 +1,188 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amsthm,amssymb,fullpage,graphicx,hyperref,listings}
+\usepackage{listings,color,setspace}
+\author{Andy Reagan}
+\title{Math 337 Homework 08}
+
+     \def\NN{\mathbb{N} }
+     \def\ZZ{\mathbb{Z} }
+     \def\QQ{\mathbb{Q} }
+     \def\RR{\mathbb{R} }
+     \def\CC{\mathbb{C} }
+     \def\f{\frac }
+     \def\b{\begin }
+     \def\e{\end }
+     \def\Log{\text{Log} \,}
+     \def\Re{\text{Re} \, }
+
+\lstset{language=MATLAB,
+basicstyle=\ttfamily\scriptsize\singlespacing,
+keywordstyle=\color{blue},
+stringstyle=\color{red},
+commentstyle=\color{green},
+morecomment=[l][\color{magenta}]{\#},
+frame=L,
+xleftmargin=\parindent,
+%%numbers=left,                   %% where to put the line-numbers
+%%numberstyle=\scriptsize,      %% the size of the fonts that are used for the line-numbers
+%%stepnumber=1,                   %% the step between two line-numbers. If it is 1 each line will be numbered
+numbersep=5pt,
+breaklines=true,        %% sets automatic line breaking
+breakatwhitespace=false,    %% sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)} 
+}
+
+
+     \newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}}
+     \newcommand{\partialdiff}[2]{\frac{\partial #1}{\partial #2}}
+     \newcommand{\pdiffsq}[2]{\frac{\partial^2 #1}{{\partial #2}^2}}
+     \newcommand{\pdiffcu}[2]{\frac{\partial^3 #1}{{\partial #2}^3}}
+     \newcommand{\pdiffhi}[3]{\frac{\partial^#3 #1}{{\partial #2}^#3}}
+     \newcommand{\diff}[2]{\frac{{\rm d}#1}{{\rm d}#2}}
+     \newcommand{\diffsq}[2]{\frac{{\rm d}^{2}#1}{{\rm d} {#2}^2}}
+     \newcommand{\diffhi}[3]{\frac{{\rm d}^#3 #1}{{\rm d} {#2}^#3}}
+     \newcommand{\tdiff}[2]{\mbox{d} #1/\mbox{d} #2}
+     \newcommand{\tdiffsq}[2]{\mbox{d}^{2} #1/\mbox{d} {#2}^2}
+     \newcommand{\tpdiff}[2]{\partial #1/\partial #2}
+     \newcommand{\tpdiffsq}[2]{\partial^2 #1/\partial {#2}^2}
+     \newcommand{\bvec}[1]{\vec{ {\bf #1 } }}
+     \newcommand{\oh}[1]{O(h^{{#1}})}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+
+\item Use the Gerschgorin Circles Theorem and the fact that the eigenvalues of real symmetric matrices are real to obtain the best estimate for the location of the eigenvalues of the following tri-diagonal matrix:
+\[ A = \left ( \begin{array}{ccccccc} a & -1 & 0 & . & . & . & 0\\
+-1 & a & -1 & 0 & . & . & 0\\
+0 & -1 & a & -1 & 0 & . & 0\\
+ &  &  & . & . & . & \\
+0 & . & . & 0 & -1 & a & -1\\
+0 & . & . & . & 0 & -1 & a\end{array} \right ) , \]
+where $a$ is a real number.
+In particular, what is the minimum distance between an eigenvalue of this matrix and zero?
+
+\bigskip
+\textbf{Solution:} By the Gerschgorin Circles Theorem...
+
+%% My code and a solution plot follow.
+
+%% \lstinputlisting[language=Matlab]{andy_hw08_prb01.m}
+
+%% \begin{figure}[h!]
+%%   \centering
+%%     \includegraphics[width=0.5\textwidth]{andy_hw08_prb01_01.pdf}
+%%   \caption{Solution of the BVP with the shooting method.}
+%% \end{figure}
+
+\item Consider a linear BVP
+\[ y'' + 2(2-x)y' = 2(2-x), y(0) = -1, y(6) = 5.\]
+Discretize it using scheme (8.4) with $h = 1$.
+\begin{enumerate}
+
+\item[(i)] Verify that you obtain a linear system
+\[ \left ( \begin{array}{ccccc} -2 & 2 & 0 & 0 & 0\\
+1 & -2 & 1 & 0 & 0\\
+0 & 2 & -2 & 0 & 0\\
+0 & 0 & 3 & -2 & -1\\
+0 & 0 & 0 & 4 & -2\end{array} \right ) \left (\begin{array}{c} Y_1 \\
+Y_2\\
+Y_3\\
+Y_4\\
+Y_5\end{array} \right ) = \left (\begin{array}{r} 2 \\
+0\\
+-2\\
+-2\\
+4\end{array} \right ).\]
+
+\item[(ii)] Solve is using MATLAB. What do you obtain?
+\item[(iii)] The result you have obtain in part (ii) occurs because one of the conditions of Theorem 8.3 is violated.
+What is the condition?
+\end{enumerate}
+
+\bigskip
+\textbf{Solution:} 
+\begin{enumerate}
+\item[(i)] 
+\item[(ii)] 
+\item[(iii)] 
+\end{enumerate}
+
+\item 
+\begin{enumerate}
+\item Give an operation count for finding $L$ and $U$ for a tridiagonal matrix, as per Eq. (8.21).
+\item Give operation counts for solving the systems in (8.17), as per (8.22) and (8.23). 
+\item Given the total operations count for the Thomas algorithm.
+\end{enumerate}
+
+\bigskip
+\textbf{Solution:} 
+\begin{enumerate}
+\item
+\item 
+\item 
+\end{enumerate}
+
+\item Use the \verb|thomas.m| function, posted under ``Codes for examples and selected homework problems,'' to solve a tridiagonal system $A\vec{y} = \vec{r}$ where $A$ has '2' on the main diagonal and '-1' on the two subdiagonals.
+Take $\vec{r} = [1,-1,1,-1,\ldots]^T$ and $M = 1000$ and 5000.
+Now solve the same sustem using Matlab's solver.
+Here, you need to investigate {\em two} cases: One, when $A$ is constructed as a regular (i.e., full) matrix and two, when it is constructed as a sparse matrix.
+
+Compare the computational times required to solve this system for your code and for the MATLAB's solver, in those two cases.
+In particular, comment on {\em how the computational times scale with $M$} in each of the three cases considered.
+\bigskip
+\textbf{Solution:} 
+
+\item Redo Problem 4 of HW07 using the discretized BVP (8.4) with $h = 0.09$ (ste size $h = 0.1$ will not ``fit'' into the interval $[0,1.62]$).
+Compare the result with that found in HW07.
+Which method, shooting or finite-difference discretization, is preferable for solving BVPs like this one?
+\begin{enumerate}
+\item[Bonus part (a)] Plot the error of your numerical solution. Explain the result.
+\item[Bonus part (b)] Repeat the problem with $h = 0.01$ and plot the error. Explain why it is greater than that for $h = 0.09$.
+\end{enumerate}
+
+\bigskip
+\textbf{Solution:} 
+
+\item Solve the BVP
+\[ (1+x)^2 y'' = 2y-4 , y(0) =  0, y(1) + 2y'(1) = 2 \]
+using the second-order accurate discretization (8.4) (for $n = 1,\ldots,N-1$) of this BVP.
+Use Method 1 of Sec. 8.4 modified in such a way that it can handle the mixed type BC at the {\em right} end point of the interval.
+
+Confirm that you numerical solution has the second order of accurarcy by comparing it at different $h$ with the exact solution $y_\text{exact} = 2x/(1+x)$.
+For this, do the following:
+\begin{enumerate}
+\item[(i)] Run your code with $h = 0.05$ and $h = 0.025$;
+\item[(ii)] Plot the error as a function of $x$;
+\item[(iii)] Confirm that the maximum error scales as $O(h^2)$.
+\end{enumerate}
+
+\bigskip
+\textbf{Solution:} 
+
+\item Show that if condition (8.42) and the two conditions stated one line below it hold, then the coefficient matrix in Method 2 based on Eq. (8.39) is SDD.
+
+Bonus part: Equations (8.36) and (8.39) each lead to a second-order accurate method.
+Therefore, solutions obtained by those methods must differ by $\oh{3}$.
+Show {\em analytically} that this is indeed the case.
+
+\bigskip
+\textbf{Solution:} 
+
+\end{enumerate}
+
+\clearpage
+\pagebreak
+{\huge Appendix 1: ODE Functions}
+%% \lstinputlisting[language=Matlab]{andy_hw08_prb01_ODE.m}
+%% \lstinputlisting[language=Matlab]{andy_hw08_prb01_ODEh.m}
+
+\clearpage
+\pagebreak
+{\huge Appendix 2: Numerical Methods}
+
+%% \lstinputlisting[language=Matlab]{andy_ME.m}
+%% \lstinputlisting[language=Matlab]{andy_MEr.m}
+
+\end{document}
