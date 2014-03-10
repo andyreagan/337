@@ -64,7 +64,11 @@ where $a$ is a real number.
 In particular, what is the minimum distance between an eigenvalue of this matrix and zero?
 
 \bigskip
-\textbf{Solution:} By the Gerschgorin Circles Theorem...
+\textbf{Solution:} By the Gerschgorin Circles Theorem, all of the eigenvalues are found in circles centered at $a$.
+The radius of these circles is $1$, corresponding to the first and last rows, and $2$ otherwise.
+Since the eigenvalues are real, we know that they fall in the interval $[a-2,a+2]$ on the real line.
+
+In particular, the distance between the eigenvalues of this matrix and 0 is at least $a-2$ if $a>2$ and $a+2$ is $a<2$. If $|a|\leq 2$, the minimum distance is 0 (i.e., the eigenvalues can well be 0).
 
 %% My code and a solution plot follow.
 
@@ -93,7 +97,7 @@ Y_4\\
 Y_5\end{array} \right ) = \left (\begin{array}{r} 2 \\
 0\\
 -2\\
--2\\
+-4\\
 4\end{array} \right ).\]
 
 \item[(ii)] Solve is using MATLAB. What do you obtain?
@@ -104,9 +108,33 @@ What is the condition?
 \bigskip
 \textbf{Solution:} 
 \begin{enumerate}
-\item[(i)] 
-\item[(ii)] 
-\item[(iii)] 
+\item[(i)] For this problem, equation (8.4) becomes
+\begin{align} &Y_0 = -1;\\
+&(1+h(2-x_n))Y_{n+1} -2 Y_n + (1-h(2-x_n)) Y_{n-1} = 2 h^2 (2-x_n),~~~1\leq n \leq 5 \label{eq:11}\\
+&Y_6 = 5.\end{align}
+Setting $h = 1$ in \eqref{eq:11}, this become
+\begin{equation} (3-x_n)Y_{n+1} -2 Y_n + (-1+x_n) Y_{n-1} = 4-2x_n; \label{eq:11}\end{equation}
+We have the following 5 discrete equations for $Y_{1\ldots 5}$, where $Y_0$ and $Y_6$ are the supplied BC.
+\begin{align*} (3-x_1)Y_{2} -2 Y_1 + (-1+x_1) Y_{0} = 4-2x_1; \\
+(3-x_2)Y_{3} -2 Y_2 + (-1+x_2) Y_{1} = 4-2x_2; \\
+(3-x_3)Y_{4} -2 Y_3 + (-1+x_3) Y_{2} = 4-2x_3; \\
+(3-x_4)Y_{5} -2 Y_4 + (-1+x_4) Y_{3} = 4-2x_4; \\
+(3-x_5)Y_{6} -2 Y_5 + (-1+x_5) Y_{4} = 4-2x_5. \end{align*}
+Plugging in $x_i = i$ and $Y_0 = -1, Y_6 = 5$, and moving constants to the RHS, we are left
+\begin{align*} 2Y_{2} -2 Y_1 = 2; \\
+Y_{3} -2 Y_2 + Y_{1} = 0; \\
+-2 Y_3 + 2Y_{2} = -2; \\
+-Y_{5} -2 Y_4 + 3Y_{3} = -4; \\
+-2 Y_5 + 4Y_{4} = 4. \end{align*}
+Intuitively obvious to the casual observer, this agrees with the desired linear system.
+
+\item[(ii)] MATLAB obtain a vector of all NaN's, the matrix being singular to working precision.
+
+\lstinputlisting[language=Matlab]{andy_hw08_prb02.m}
+
+\item[(iii)] The requirement of Theorem 8.3 that $h\mathcal{P} \leq 2$ is violated.
+Here $P(x)$ achieves a magnitude of 8, at $x = 6$, and we had chose $h = 1$.
+Therefore, our $h\mathcal{P} = 8$.
 \end{enumerate}
 
 \item 
@@ -119,34 +147,70 @@ What is the condition?
 \bigskip
 \textbf{Solution:} 
 \begin{enumerate}
-\item
-\item 
-\item 
+\item We compute $M-1$ new $\alpha$ values, and $M-1$ new $\beta$ values.
+Each new $\alpha$ requires one operation, and each $\beta$ requires 2.
+Therefore, we use $3(M-1)$ operations.
+\item Solving for $\vec{z}$ requires exactly $2(M-1)$ operations.
+The solving for $\vec{y}$ requires exactly $1+3(M-1)$ operations.
+In total, this is $1+5(M-1)$ operations.
+\item The total operation count is (adding the two previous counts) $1+8(M-1)$.
 \end{enumerate}
 
 \item Use the \verb|thomas.m| function, posted under ``Codes for examples and selected homework problems,'' to solve a tridiagonal system $A\vec{y} = \vec{r}$ where $A$ has '2' on the main diagonal and '-1' on the two subdiagonals.
 Take $\vec{r} = [1,-1,1,-1,\ldots]^T$ and $M = 1000$ and 5000.
-Now solve the same sustem using Matlab's solver.
+Now solve the same system using Matlab's solver.
 Here, you need to investigate {\em two} cases: One, when $A$ is constructed as a regular (i.e., full) matrix and two, when it is constructed as a sparse matrix.
 
 Compare the computational times required to solve this system for your code and for the MATLAB's solver, in those two cases.
 In particular, comment on {\em how the computational times scale with $M$} in each of the three cases considered.
+
 \bigskip
-\textbf{Solution:} 
+\textbf{Solution:} I compare with the following code, and plot how the computational times scale with $M$ (using more values of $M$).
+I find that both the \verb|thomas.m| code and MATLAB's sparse solver scale sub-linearly with $M$, with MATLAB's solver being faster.
+
+For a non-sparse matrix, MATLAB's solver scales superlinearly with $M$, and becomes useless quickly.
+
+\lstinputlisting[language=Matlab]{andy_hw08_prb04.m}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{andy_hw08_prb04_01.pdf}
+  \caption{Scaling of computational time for thomas.m and MATLAB's built in solver, with a sparse matrix, versus $M$.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{andy_hw08_prb04_02.pdf}
+  \caption{Scaling of computational time for MATLAB's built in solver, with a non-sparse matrix, versus $M$. It is impractical on a personal computer to extend $M$ much further than a 10,000 by 10,000 matrix, which takes 7 second to solve.}
+\end{figure}
 
 \item Redo Problem 4 of HW07 using the discretized BVP (8.4) with $h = 0.09$ (ste size $h = 0.1$ will not ``fit'' into the interval $[0,1.62]$).
 Compare the result with that found in HW07.
 Which method, shooting or finite-difference discretization, is preferable for solving BVPs like this one?
 \begin{enumerate}
-\item[Bonus part (a)] Plot the error of your numerical solution. Explain the result.
-\item[Bonus part (b)] Repeat the problem with $h = 0.01$ and plot the error. Explain why it is greater than that for $h = 0.09$.
+\item[Bonus (a)] Plot the error of your numerical solution. Explain the result.
+\item[Bonus (b)] Repeat the problem with $h = 0.01$ and plot the error. Explain why it is greater than that for $h = 0.09$.
 \end{enumerate}
 
 \bigskip
-\textbf{Solution:} 
+\textbf{Solution:} The problem is
+\begin{align*} y'' = 30^2 (y - 1 + 2x), ~~~~y(0) = 1, ~~~~y(1.62) = -2.24.\end{align*}
+Discretizing using (8.4) is 
+\begin{align*} &Y_0 = 1;\\
+&Y_{n+1} - Y_n (2-30^2h^2) + Y_{n-1} = 30^2 h^2 (2x_n -1 ) , ~~~1\leq n \leq N-1;\\
+&Y_N = -2.24\end{align*}
+I build this matrix in MATLAB and solve it using the built in solver.
+
+\lstinputlisting[language=Matlab]{andy_hw08_prb05.m}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{andy_hw08_prb05_01.pdf}
+  \caption{Solution the HW07 problem 4, using the finite difference scheme given by Eq (8.4).}
+\end{figure}
 
 \item Solve the BVP
-\[ (1+x)^2 y'' = 2y-4 , y(0) =  0, y(1) + 2y'(1) = 2 \]
+\[ (1+x)^2 y'' = 2y-4 , ~~~~y(0) =  0, ~~~~y(1) + 2y'(1) = 2 \]
 using the second-order accurate discretization (8.4) (for $n = 1,\ldots,N-1$) of this BVP.
 Use Method 1 of Sec. 8.4 modified in such a way that it can handle the mixed type BC at the {\em right} end point of the interval.
 
@@ -159,7 +223,28 @@ For this, do the following:
 \end{enumerate}
 
 \bigskip
-\textbf{Solution:} 
+\textbf{Solution:} To account for the mixed BC,
+\[ A_1 y(b) + A_2 y'(b) = \beta,\]
+we introduce the point $Y_{N+1}$ and approximate $y'(b)$ with a second order approximation
+\[y'(b) = \f{Y_{N+1}-Y_{N-1} }{2h} + \oh{2} .\]
+The mixed BC is therefore discretized as
+\begin{equation} A_1 Y_{N} + A_{2} \f{Y_{N+1}-Y_{N-1} }{2h} = \beta. \label{eq:disBC}\end{equation}
+The ODE discretized at $x_N$ is
+\begin{equation} \left ( 1+P_N \right ) Y_{N+1} - \left ( 2 - h^2 Q_N \right ) Y_N + \left ( 1 - \f{h}{2} P_N \right ) Y_{N-1} = h^2 R_{N} \label{eq:disODE} \end{equation}
+Solving for $Y_{N+1}$ in \eqref{disBC} into \eqref{disODE} we have
+\begin{equation} - \left ( 2 - h^2 Q_N + 2h \f{A_1}{A_2} \left ( 1 + \f{h}{2} P_N \right ) \right ) Y_N + 2 Y_{N-1} = h^2 R_{N}- \left ( 1+ \f{h}{2}P_N\right ) \f{2h\beta}{A_2}  \label{eq:disODEnew} \end{equation}
+where the first two terms on the LHS and the last term on the RHS make these matrix diagonal entries different.
+I solve this in MATLAB, and plot the error versus $h$.
+We find that the maximum error increases fourfold when $h$ is doubled, confirming that the method is $\oh{2}$ accurate.
+
+\lstinputlisting[language=Matlab]{andy_hw08_prb06.m}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{andy_hw08_prb06_01.pdf}
+  \caption{Error in the solution to the BVP with mixed BC at $x = b$, using Method 1 of Sec 8.4, versus $h$.
+           We confirm that the method is second order.}
+\end{figure}
 
 \item Show that if condition (8.42) and the two conditions stated one line below it hold, then the coefficient matrix in Method 2 based on Eq. (8.39) is SDD.
 
@@ -168,7 +253,17 @@ Therefore, solutions obtained by those methods must differ by $\oh{3}$.
 Show {\em analytically} that this is indeed the case.
 
 \bigskip
-\textbf{Solution:} 
+\textbf{Solution:} Condition (8.42) is that 
+\[ A_1 A_2 \leq 0 \]
+meaning that they are of opposite parity.
+The other conditions ($Q \leq 0, h\mathcal{P} \leq 2$) will also be used.
+Consider that the only change in the coefficient matrix from using Method 2, from the form of the original triadiagonal matrix (8.6) is the first row.
+
+To retain SDD of the coefficient matrix, we therefore require that the entry in row 1, column 1 is greater than the entry in row 1, column 2.
+Those entries are the coefficients on $Y_{0,1}$, which appear in equation (8.39).
+Taking the hint, I begin by multiplying (8.39) by $h/A_2$.
+This yeilds:
+
 
 \end{enumerate}
 
