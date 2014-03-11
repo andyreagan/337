@@ -264,6 +264,26 @@ Those entries are the coefficients on $Y_{0,1}$, which appear in equation (8.39)
 Taking the hint, I begin by multiplying (8.39) by $h/A_2$.
 This yeilds:
 
+\item Solve the BVP stated in Problem 5 of HW 7 using Picard iterations.
+
+\bigskip
+\textbf{Solution:} Plot and solution code follow.
+
+The number of iterations does not appear to depend on $h$, nor does the convergence.
+For both values of $h$, the shallow solution converges while the deep solution diverges.
+
+
+\item Repeat Problem 8 using the modified Picard's iterations.
+
+\bigskip
+\textbf{Solution:} Plot and solution code follow.
+
+My code ran, but it only had $c=1$, and found a period two point (but most diverged).
+Corrected that, and almost everything diverged but for one $h$ and $c = 0.75$ the solution converged to the wrong value, and converged at $c=0$ for both $h$.
+
+I would expect convergence at least at $c=0$ since this corresponds to the original Picard's iterations, which converged for both $h$ on the shallow solution.
+
+I haven't explored the deep solution considerably, because I wanted to find this ``unexpected'' behavior in the shallow solution, and now I've lost confidence that my code is correct.
 
 \end{enumerate}
 
