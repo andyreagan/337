@@ -2,7 +2,25 @@
 %
 %
 
-hvec = fliplr([0.2;0.1;0.05;0.025;0.0125]);
+% FOR MAKING SECOND PLOT
+% tmpsym = {'o','s','v','o','s','v'};
+% tmpcol = {'g','b','r','k','c','m'};
+% tmpfigh = gcf;
+% clf;
+% figshape(600,600);
+% set(gcf,'Color','none');
+% set(gcf,'InvertHardCopy', 'off');
+% set(gcf,'DefaultAxesFontname','helvetica');
+% set(gcf,'DefaultLineColor','r');
+% set(gcf,'DefaultAxesColor','none');
+% set(gcf,'DefaultLineMarkerSize',5);
+% set(gcf,'DefaultLineMarkerEdgeColor','k');
+% set(gcf,'DefaultLineMarkerFaceColor','g');
+% set(gcf,'DefaultAxesLineWidth',0.5);
+% set(gcf,'PaperPositionMode','auto');
+
+hvec = 10^-4:10^-3:10^-1; % FIRST PLOT
+% hvec = [.05,.05/2]; % SECOND PLOT
 for i=1:length(hvec)
     h = hvec(i);
     x = (0:h:1)';
@@ -30,19 +48,45 @@ for i=1:length(hvec)
     
     % solve
     yNum = [y0;A\r];
+    % figure;
     yExact = 2.*x./(1+x);
+    % FOR MAKING SECOND PLOT
+%     plot(x,abs(yExact-yNum),'LineWidth',2,'Color',tmpcol{i});
+%     hold on;
+%     set(gca, 'fontsize',18);
     
     maxError = max(abs(yExact-yNum));
     errorVec(i) = maxError;
 end
 
+% FOR MAKING SECOND PLOT
+% xlabel('x','FontSize',20)
+% ylabel('error','FontSize',20)
+% tmp1h = legend({'h = 0.05','h = 0.025'});
+% set(tmp1h,'FontSize',17);
+% legend boxoff
+% psprintcpdf_keeppostscript(sprintf('andy_hw08_prb06_%02g',2));
+
 errorVec = errorVec';
-disp(hvec);
-disp(errorVec);
-plot(hvec,errorVec);
+
+% FIST PLOT
+% plot error versus h
+tmpfigh = gcf;
+clf;
+figshape(600,600);
+set(gcf,'Color','none');
+set(gcf,'InvertHardCopy', 'off');
+set(gcf,'DefaultAxesFontname','helvetica');
+set(gcf,'DefaultLineColor','r');
+set(gcf,'DefaultAxesColor','none');
+set(gcf,'DefaultLineMarkerSize',5);
+set(gcf,'DefaultLineMarkerEdgeColor','k');
+set(gcf,'DefaultLineMarkerFaceColor','g');
+set(gcf,'DefaultAxesLineWidth',0.5);
+set(gcf,'PaperPositionMode','auto');
+
+plot(hvec,errorVec,'LineWidth',2);
+set(gca, 'fontsize',18)
 xlabel('h','FontSize',20)
 ylabel('max error','FontSize',20)
-set(gcf, 'units', 'inches', 'position', [1 1 10 10])
-set(gcf,'PaperPositionMode','auto')
-print('-depsc2','-zbuffer','-r200',sprintf('andy_hw08_prb06_%02g.eps',1))
-system(sprintf('epstopdf andy_hw08_prb06_%02g.eps',1));
+psprintcpdf_keeppostscript(sprintf('andy_hw08_prb06_%02g_tom',1));

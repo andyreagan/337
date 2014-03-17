@@ -23,10 +23,26 @@ size(r)
 y = A\r;
 
 % plot
-plot(x',[y0;y;yf]);
+tmpfigh = gcf;
+clf;
+figshape(600,600);
+set(gcf,'Color','none');
+set(gcf,'InvertHardCopy', 'off');
+set(gcf,'DefaultAxesFontname','helvetica');
+set(gcf,'DefaultLineColor','r');
+set(gcf,'DefaultAxesColor','none');
+set(gcf,'DefaultLineMarkerSize',5);
+set(gcf,'DefaultLineMarkerEdgeColor','k');
+set(gcf,'DefaultLineMarkerFaceColor','g');
+set(gcf,'DefaultAxesLineWidth',0.5);
+set(gcf,'PaperPositionMode','auto');
+
+plot(x',[y0;y;yf],'LineWidth',2);
+set(gca, 'fontsize',18)
 xlabel('x','FontSize',20)
 ylabel('y','FontSize',20)
-set(gcf, 'units', 'inches', 'position', [1 1 10 10])
-set(gcf,'PaperPositionMode','auto')
-print('-depsc2','-zbuffer','-r200',sprintf('andy_hw08_prb05_%02g.eps',1))
-system(sprintf('epstopdf andy_hw08_prb05_%02g.eps',1));
+
+psprintcpdf_keeppostscript(sprintf('andy_hw08_prb05_%02g',1));
+
+% print('-depsc2','-zbuffer','-r200',sprintf('andy_hw08_prb05_%02g.eps',1))
+% system(sprintf('epstopdf andy_hw08_prb05_%02g.eps',1));

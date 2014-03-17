@@ -17,10 +17,10 @@
 
 \lstset{language=MATLAB,
 basicstyle=\ttfamily\scriptsize\singlespacing,
-keywordstyle=\color{blue},
-stringstyle=\color{red},
-commentstyle=\color{green},
-morecomment=[l][\color{magenta}]{\#},
+keywordstyle=\color{black},
+stringstyle=\color{black},
+commentstyle=\color{black},
+morecomment=[l][\color{black}]{\#},
 frame=L,
 xleftmargin=\parindent,
 %%numbers=left,                   %% where to put the line-numbers
@@ -166,9 +166,9 @@ In particular, comment on {\em how the computational times scale with $M$} in ea
 
 \bigskip
 \textbf{Solution:} I compare with the following code, and plot how the computational times scale with $M$ (using more values of $M$).
-I find that both the \verb|thomas.m| code and MATLAB's sparse solver scale sub-linearly with $M$, with MATLAB's solver being faster.
+I find that both the \verb|thomas.m| code and MATLAB's sparse solver scale linearly with $M$, with MATLAB's solver being faster.
 
-For a non-sparse matrix, MATLAB's solver scales superlinearly with $M$, and becomes useless quickly.
+For a non-sparse matrix, MATLAB's solver scales superlinearly (perhaps quadraticaly) with $M$, and becomes useless quickly.
 
 \lstinputlisting[language=Matlab]{andy_hw08_prb04.m}
 
@@ -184,6 +184,8 @@ For a non-sparse matrix, MATLAB's solver scales superlinearly with $M$, and beco
   \caption{Scaling of computational time for MATLAB's built in solver, with a non-sparse matrix, versus $M$. It is impractical on a personal computer to extend $M$ much further than a 10,000 by 10,000 matrix, which takes 7 second to solve.}
 \end{figure}
 
+\clearpage
+\pagebreak
 \item Redo Problem 4 of HW07 using the discretized BVP (8.4) with $h = 0.09$ (ste size $h = 0.1$ will not ``fit'' into the interval $[0,1.62]$).
 Compare the result with that found in HW07.
 Which method, shooting or finite-difference discretization, is preferable for solving BVPs like this one?
@@ -201,6 +203,8 @@ Discretizing using (8.4) is
 &Y_N = -2.24\end{align*}
 I build this matrix in MATLAB and solve it using the built in solver.
 
+Clearly, the finite-difference discretization is preferable to (sinlge) shooting for BVP like this one.
+
 \lstinputlisting[language=Matlab]{andy_hw08_prb05.m}
 
 \begin{figure}[h!]
@@ -208,6 +212,7 @@ I build this matrix in MATLAB and solve it using the built in solver.
     \includegraphics[width=0.5\textwidth]{andy_hw08_prb05_01.pdf}
   \caption{Solution the HW07 problem 4, using the finite difference scheme given by Eq (8.4).}
 \end{figure}
+
 
 \item Solve the BVP
 \[ (1+x)^2 y'' = 2y-4 , ~~~~y(0) =  0, ~~~~y(1) + 2y'(1) = 2 \]
@@ -246,6 +251,12 @@ We find that the maximum error increases fourfold when $h$ is doubled, confirmin
            We confirm that the method is second order.}
 \end{figure}
 
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{andy_hw08_prb06_02.pdf}
+  \caption{Error in the solution to the BVP with mixed BC at $x = b$, using Method 1 of Sec 8.4, versus $x$ for two values of $h$.}
+\end{figure}
+
 \item Show that if condition (8.42) and the two conditions stated one line below it hold, then the coefficient matrix in Method 2 based on Eq. (8.39) is SDD.
 
 Bonus part: Equations (8.36) and (8.39) each lead to a second-order accurate method.
@@ -263,7 +274,19 @@ To retain SDD of the coefficient matrix, we therefore require that the entry in 
 Those entries are the coefficients on $Y_{0,1}$, which appear in equation (8.39).
 Taking the hint, I begin by multiplying (8.39) by $h/A_2$.
 This yeilds:
+\[ hY_0 \f{A_1}{A_2} + Y_1 -Y_0 -\f{h^2}{2} R_0 +\f{h}{2} P_0 Y_1 - \f{h}{2} P_0 Y_0+ \f{h^2}{2} Q_0 Y_0 = \f{\alpha h}{A_2} \]
+The terms in $Y_0$ and $Y_1$ are thus
+\begin{align*} & Y_0: ~~ h\f{A_1}{A_2} - 1 - \f{h}{2} P_0 + \f{h^2}{2} Q_0\\
+ & Y_1: ~~ 1+\f{h}{2} P_0 \end{align*}
+Now to show that the maginude of the $Y_0$ terms is greater than the magnitude of the $Y_1$ terms, we have (note we drop the inequality since every term is positive by Condition 8.42 and the other conditions)
+\begin{align*} \left | h\f{A_1}{A_2} - 1 - \f{h}{2} P_0 + \f{h^2}{2} Q_0 \right | & =\left | \left (1 +\f{h}{2} P_0 \right )- h\f{A_1}{A_2}   - \f{h^2}{2} Q_0 \right |\\
+& = \left ( 1+\f{h}{2} P_0\right)   - h\f{A_1}{A_2}- \f{h^2}{2} Q_0\\
+& >  1+\f{h}{2} P_0 \\
+& = \left | 1+\f{h}{2} P_0 \right |,\end{align*}
+which is the magnitude of the coefficient on $Y_1$, as desired.
 
+\clearpage
+\pagebreak
 \item Solve the BVP stated in Problem 5 of HW 7 using Picard iterations.
 
 \bigskip
@@ -271,33 +294,174 @@ This yeilds:
 
 The number of iterations does not appear to depend on $h$, nor does the convergence.
 For both values of $h$, the shallow solution converges while the deep solution diverges.
+The convergence of the shallow solution is achieved in 11 iterations for each $h$.
 
+\lstinputlisting[language=Matlab]{andy_hw08_prb08.m}
 
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw08_prb08_shallowerror.pdf}
+  \caption{Logarithm of the error versus iteration number for the Picard iterations, starting close to the shallow solution.
+           Since this looks like a straight line, we observe that the Picard method converges linearly.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw08_prb08_deeperror.pdf}
+  \caption{Logarithm of the error versus iteration number for the Picard iterations, starting close to the deep solution.
+           The iterations do not converge, and the error runs away.}
+\end{figure}
+
+\clearpage
+\pagebreak
 \item Repeat Problem 8 using the modified Picard's iterations.
 
 \bigskip
 \textbf{Solution:} Plot and solution code follow.
 
-My code ran, but it only had $c=1$, and found a period two point (but most diverged).
-Corrected that, and almost everything diverged but for one $h$ and $c = 0.75$ the solution converged to the wrong value, and converged at $c=0$ for both $h$.
+I present a summary of the results in a table, where under each value of $h$ I report the number of iterations required.
+The ``weird'' behavior manifests as an iteration does not converge to the solution, or go off to infinity, but bounces between two (or more) different $y$.
+In the case of simple Picard, the solution bounces between two different $y$, and in modified Picard the behavior is more complicated.
+This conclusion was arrived at by plotting $y$ at each iterate, as to see the behavior directly.
+In the code, setting ``plot'' to 1 in the Picard function shows these plots (it is suggested to lower the maximum iterate count in this case).
 
-I would expect convergence at least at $c=0$ since this corresponds to the original Picard's iterations, which converged for both $h$ on the shallow solution.
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{cccc}
+  \hline
+  solution type & $c$ & $h=0.1$ & $h=0.2$ \\
+  \hline
+  \hline
+  shallow & 100 & 314 & 204 \\
+          & 20 & 77 & 74 \\
+          & 10 & 43 & 42 \\
+          & 1.5 & 10 & 10 \\
+          & 0.75 & 6 & 6 \\
+          & 0 & 11 & 11 \\
+          & -0.5 & 25 & 24 \\
+          & -0.9 & 327 & 416 \\
+          & -1 & --* & --* \\
+          & -1.5 & -- & -- \\
+  \hline
+  deep    & -2.9 & -- & -- \\
+          & -4 & 70 & 57 \\
+          & -3.9 & 335 & 162 \\
+          & -3.75 & --* & --* \\
+          & -3.62 & --* & --* \\
+          & -3.6 & --* & --* \\
+          & -3.55 & --* & --* \\
+          & -3.5 & -- & --* \\
+          & -5.95 & 22 & 24 \\
+          & -6.45 & 42 & 54 \\
+          & -6.95 & 933 & 25 \\
+          & -7.45 & 13 & 11 \\
+  \hline
+  deeper  & -4 & -- & -- \\
+          & -3.9 & -- & -- \\
+          & -5.95 & 24 & 26 \\
+          & -6.45 & 46 & 59 \\
+          & -6.95 & -- & -- \\
+          & -7.45 & -- & -- \\
+\end{tabular}
+\caption{The iteration count for convergence of Modified Picard to the BVP in Problem 5 of HW7.
+         The -- denotes where the solution explodes (runs off the inifinity), and --* where the solution does not converge, but remains bounded.}
+\end{center}
+\end{table}
 
-I haven't explored the deep solution considerably, because I wanted to find this ``unexpected'' behavior in the shallow solution, and now I've lost confidence that my code is correct.
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw08_prb09_illustrative.pdf}
+  \caption{A plot of the iterations in a bounded orbit of length two. The iterations alternate between the top and bottom solutions.}
+\end{figure}
+
+
+%% My code ran, but it only had $c=1$, and found a period two point (but most diverged).
+%% Corrected that, and almost everything diverged but for one $h$ and $c = 0.75$ the solution converged to the wrong value, and converged at $c=0$ for both $h$.
+
+%% I would expect convergence at least at $c=0$ since this corresponds to the original Picard's iterations, which converged for both $h$ on the shallow solution.
+
+%% I haven't explored the deep solution considerably, because I wanted to find this ``unexpected'' behavior in the shallow solution, and now I've lost confidence that my code is correct.
+
+\lstinputlisting[language=Matlab]{andy_hw08_prb09.m}
+
+\clearpage
+\pagebreak
+\item Repeat Problem 8 using the Newton-Raphson method.
+Answer all of the questios posed in Problem 8.
+As for the logarithm of the error versus the iteration count, you should obtain a parabola facing downward.
+Thus, the Newton-Raphson method converges (when it does so) {\em quadratically}.
+Is the type of convergence asymptomatically faster or slower than the linear convergence of Picard's methods?
+
+\bigskip
+\textbf{Solution:} Plot and solution code follow. I adapt the code from Problem 8, where the only differences are the construction of the matrix $A$ at each iteration, the $r$ vector, and that the result of the matrix solver is the error, which is subtracted for a new solution (it is not the new solution itself).
+
+The number of iterations does not appear to depend on $h$, nor does the convergence.
+For both values of $h$, the shallow solution converges while the deep solution diverges.
+The convergence of the shallow solution is achieved in 11 iterations for each $h$.
+
+\lstinputlisting[language=Matlab]{andy_hw08_prb10.m}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw08_prb10_shallowerror.pdf}
+  \caption{Logarithm of the error versus iteration number for the Picard iterations, starting close to the shallow solution.
+           Since this looks like a straight line, we observe that the Picard method converges linearly.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw08_prb10_deeperror.pdf}
+  \caption{Logarithm of the error versus iteration number for the Picard iterations, starting close to the deep solution.
+           The iterations do not converge, and the error runs away.}
+\end{figure}
+
+\clearpage
+\pagebreak
+\item Compare  your results in Problems 8-10 and draw conclusions.
+Namely, based on your experience with the previous three problems, list strengths and weaknesses for each of the three methods.
+Then explain under which circumstances you would and would not use, each of these methods.
+
+\bigskip
+\textbf{Solution:} 
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{lll}
+  \hline
+  method & strengths & weaknesses \\
+  \hline
+  \hline
+  Picard & easy to code & cannot obtain deep solution\\
+         & & linear convergence\\
+  \hline
+  modifid Picard & can obtain both solutions & linear convergence\\
+            & & very sensitive to $c$\\
+  \hline
+  Newton-Raphson & fast (quad. conv.) & \\
+            & & \\
+  \hline
+\end{tabular}
+\caption{The strengths and weaknesses of the BVP iteration schemes tested.}
+\end{center}
+\end{table}
 
 \end{enumerate}
 
 \clearpage
 \pagebreak
 {\huge Appendix 1: ODE Functions}
-%% \lstinputlisting[language=Matlab]{andy_hw08_prb01_ODE.m}
+\lstinputlisting[language=Matlab]{andy_hw07_prb05_ODE.m}
 %% \lstinputlisting[language=Matlab]{andy_hw08_prb01_ODEh.m}
 
 \clearpage
 \pagebreak
 {\huge Appendix 2: Numerical Methods}
 
-%% \lstinputlisting[language=Matlab]{andy_ME.m}
+\lstinputlisting[language=Matlab]{andy_hw08_prb08_r.m}
+\lstinputlisting[language=Matlab]{andy_hw08_prb09_picard.m}
+\lstinputlisting[language=Matlab]{andy_hw08_prb10_r.m}
 %% \lstinputlisting[language=Matlab]{andy_MEr.m}
 
 \end{document}
+
+
+

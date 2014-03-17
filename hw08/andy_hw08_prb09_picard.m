@@ -22,7 +22,7 @@ end
 y = yguess(2:end-1);
 % adjust A for the modified Picard
 if m
-    A = A-c.*spdiags(ones(length(A(:,1)),1),0,length(A(:,1)),length(A(:,1)));
+    A = A-h^2*c.*spdiags(ones(length(A(:,1)),1),0,length(A(:,1)),length(A(:,1)));
 end
 k = 0;
 
@@ -36,7 +36,7 @@ err = 2*tol;
 while err > tol
     k=k+1;
     if m
-        ynew = A\(rfunc(tvec(2:end-1),y,h,yguess(1),yguess(end))-c.*y);
+        ynew = A\(rfunc(tvec(2:end-1),y,h,yguess(1),yguess(end))-h^2*c.*y);
     else
         ynew = A\rfunc(tvec(2:end-1),y,h,yguess(1),yguess(end));
     end
@@ -56,7 +56,7 @@ while err > tol
         disp('solution exploded')
         break
     end
-    if k > 10^1
+    if k > 10^3
         disp('iterations do NOT converge !!!!!!!!!!!!!')
         break
     end
