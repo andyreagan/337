@@ -1,4 +1,4 @@
-% HW08 Problem 08
+% HW08 Problem 09
 %
 % solve the nonlinear BVP using picard iterations
 

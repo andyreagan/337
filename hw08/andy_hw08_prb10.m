@@ -26,12 +26,15 @@ for i=1:2
         figure;
         while err > tol
             itercount=itercount+1;
-            A = spdiags(-(2+2*h^2.*y./(2+tvec(2:end-1))),0,N,N)+spdiags(ones(N,1),-1,N,N)+spdiags(ones(N,1),1,N,N);
-            epsnew = A\andy_hw08_prb10_r(tvec(2:end-1),y,h,y0,yf);
+            A = spdiags(-2-2*h^2.*y./(2+tvec(2:end-1)),0,N,N)...
+                +spdiags(ones(N,1),-1,N,N)...
+                +spdiags(ones(N,1),1,N,N);
+            r = andy_hw08_prb10_r(tvec(2:end-1),y,h,y0,yf);
+            epsnew = A\r;
             ynew = y-epsnew;
-            disp(ynew);
+            %disp(ynew);
             err = sqrt(sum((ynew-y).^2));
-            disp(err);
+            %disp(err);
             errvec = [errvec err];
             y = ynew;
             plot(tvec,[y0;y;yf])
@@ -102,4 +105,4 @@ xlabel('iteration','FontSize',20)
 ylabel('log10(error)','FontSize',20)
 psprintcpdf_keeppostscript(sprintf('andy_hw08_prb10_deeperror'));
 
-% close all
+close all

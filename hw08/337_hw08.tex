@@ -137,6 +137,7 @@ Here $P(x)$ achieves a magnitude of 8, at $x = 6$, and we had chose $h = 1$.
 Therefore, our $h\mathcal{P} = 8$.
 \end{enumerate}
 
+
 \item 
 \begin{enumerate}
 \item Give an operation count for finding $L$ and $U$ for a tridiagonal matrix, as per Eq. (8.21).
@@ -156,6 +157,8 @@ In total, this is $1+5(M-1)$ operations.
 \item The total operation count is (adding the two previous counts) $1+8(M-1)$.
 \end{enumerate}
 
+\clearpage
+\pagebreak
 \item Use the \verb|thomas.m| function, posted under ``Codes for examples and selected homework problems,'' to solve a tridiagonal system $A\vec{y} = \vec{r}$ where $A$ has '2' on the main diagonal and '-1' on the two subdiagonals.
 Take $\vec{r} = [1,-1,1,-1,\ldots]^T$ and $M = 1000$ and 5000.
 Now solve the same system using Matlab's solver.
@@ -213,7 +216,20 @@ Clearly, the finite-difference discretization is preferable to (sinlge) shooting
   \caption{Solution the HW07 problem 4, using the finite difference scheme given by Eq (8.4).}
 \end{figure}
 
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{andy_hw08_prb05_error.pdf}
+  \caption{Error in the solution to HW07 problem 4, using the finite difference scheme given by Eq (8.4). The error is on the order of machine order, since the solver does not encounter large round-off errors from how the $30^2$ enter the matrix.}
+\end{figure}
 
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.5\textwidth]{andy_hw08_prb05_errorsmall.pdf}
+  \caption{Error in the solution to HW07 problem 4, using the finite difference scheme given by Eq (8.4). We now use $h=0.01$, and note that error is larger than for $h=0.09$. A possible explanation for this could be that the $30^2$ represented on the computer is made much smaller when multiplied by $h^2 = 10^{-4}$, resulting in a loss of precision.}
+\end{figure}
+
+\clearpage
+\pagebreak
 \item Solve the BVP
 \[ (1+x)^2 y'' = 2y-4 , ~~~~y(0) =  0, ~~~~y(1) + 2y'(1) = 2 \]
 using the second-order accurate discretization (8.4) (for $n = 1,\ldots,N-1$) of this BVP.
@@ -257,6 +273,8 @@ We find that the maximum error increases fourfold when $h$ is doubled, confirmin
   \caption{Error in the solution to the BVP with mixed BC at $x = b$, using Method 1 of Sec 8.4, versus $x$ for two values of $h$.}
 \end{figure}
 
+\clearpage
+\pagebreak
 \item Show that if condition (8.42) and the two conditions stated one line below it hold, then the coefficient matrix in Method 2 based on Eq. (8.39) is SDD.
 
 Bonus part: Equations (8.36) and (8.39) each lead to a second-order accurate method.
@@ -396,8 +414,8 @@ Is the type of convergence asymptomatically faster or slower than the linear con
 \textbf{Solution:} Plot and solution code follow. I adapt the code from Problem 8, where the only differences are the construction of the matrix $A$ at each iteration, the $r$ vector, and that the result of the matrix solver is the error, which is subtracted for a new solution (it is not the new solution itself).
 
 The number of iterations does not appear to depend on $h$, nor does the convergence.
-For both values of $h$, the shallow solution converges while the deep solution diverges.
-The convergence of the shallow solution is achieved in 11 iterations for each $h$.
+For both values of $h$, both solutions converge.
+The convergence of the shallow solution is achieved in 3 iterations for each $h$, and the deep solution in 5 iterations.
 
 \lstinputlisting[language=Matlab]{andy_hw08_prb10.m}
 
@@ -434,16 +452,16 @@ Then explain under which circumstances you would and would not use, each of thes
          & & linear convergence\\
   \hline
   modifid Picard & can obtain both solutions & linear convergence\\
-            & & very sensitive to $c$\\
+            & not too hard to code & very sensitive to $c$\\
   \hline
-  Newton-Raphson & fast (quad. conv.) & \\
-            & & \\
+  Newton-Raphson & very fast (quad. conv.) & \\
+            & not too hard to code & \\
+            & obtains both solutions & \\
   \hline
 \end{tabular}
 \caption{The strengths and weaknesses of the BVP iteration schemes tested.}
 \end{center}
 \end{table}
-
 \end{enumerate}
 
 \clearpage

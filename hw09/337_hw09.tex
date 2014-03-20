@@ -149,7 +149,21 @@ As in Problem 1, investigate how the error of the Galerkin method scales with $(
 
 
 \bigskip
-\textbf{Solution:} 
+\textbf{Solution:} The solution is obtained by the following code, and I include plots of the numerical solution and exact solution (Figure 1) and the scaling of error with $(1/M)$ (Figure 2).
+
+\lstinputlisting[language=Matlab]{andy_hw09_prb01.m}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw09_prb01_01.pdf}
+  \caption{Exact and numerical solutions of the BVP using the collocation method with $M=10$.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw09_prb01_02.pdf}
+  \caption{Scaling of the maximum error the collocation solution with $(1/M)$. We observe that error scales super-linearly (perhaps quadratically) with $1/M$, indicating that the error decrease scales sub-linearly with the decrease in $h$ (where by $h$ I mean the point spacing, which makes sense here, where the points are evenly spaced).}
+\end{figure}
 
 \end{enumerate}
 
