@@ -70,6 +70,30 @@ for j=1:length(Mvec)
     ylabel('y','FontSize',20)
     
     psprintcpdf_keeppostscript(sprintf('andy_hw09_prb01_%02g_m%02g',1,M));
+    
+    %%  plot the solution error
+    figure;
+    tmpfigh = gcf;
+    clf;
+    figshape(600,600);
+    set(gcf,'Color','none');
+    set(gcf,'InvertHardCopy', 'off');
+    set(gcf,'DefaultAxesFontname','helvetica');
+    set(gcf,'DefaultLineColor','r');
+    set(gcf,'DefaultAxesColor','none');
+    set(gcf,'DefaultLineMarkerSize',5);
+    set(gcf,'DefaultLineMarkerEdgeColor','k');
+    set(gcf,'DefaultLineMarkerFaceColor','g');
+    set(gcf,'DefaultAxesLineWidth',0.5);
+    set(gcf,'PaperPositionMode','auto');
+    
+    plot(x,abs(yexact-y'),'LineWidth',2,'Color','r')
+    set(gca, 'fontsize',18)
+    xlabel('x','FontSize',20)
+    ylabel('y','FontSize',20)
+    
+    psprintcpdf_keeppostscript(sprintf('andy_hw09_prb01_%02g_m%02g_error',1,M));
+    close all;
 end
 
 %% plot error versus 1/M

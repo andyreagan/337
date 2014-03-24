@@ -64,14 +64,20 @@ Compare you finite-element solution with the exact solution $y_{\text{exact}} = 
 Noting that $y'' = z''$ and the definition $z = y-x$ we rewrite the BVP as
 \[ z'' - \f{2z}{(1+x)^2} = -\f{4}{(1+x)^2} + \f{2x}{(1+x)^2}, ~~~~~z(0)=0,~~~z(1) = 0.\]
 
-The solution is obtained by the following code, and I include plots of the numerical solution and exact solution (Figure 1) and the scaling of error with $(1/M)$ (Figure 2).
+The solution is obtained by the following code, and I include plots of the numerical solution and exact solution (Figure 1), the error of that solution (Figure 2) and the scaling of error with $(1/M)$ (Figure 3).
 
 \lstinputlisting[language=Matlab]{andy_hw09_prb01.m}
 
 \begin{figure}[h!]
   \centering
-    \includegraphics[width=0.45\textwidth]{andy_hw09_prb01_01.pdf}
+    \includegraphics[width=0.45\textwidth]{andy_hw09_prb01_01_m10.pdf}
   \caption{Exact and numerical solutions of the BVP using the collocation method with $M=10$.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw09_prb01_01_m10_error.pdf}
+  \caption{Error of the solution to the BVP using the collocation method with $M=10$.}
 \end{figure}
 
 \begin{figure}[h!]
@@ -140,45 +146,39 @@ The middle integral, transforming $z = x-x_{j-1}$ becomes
 &=  \left. \f{z^2}{2h}-\f{z^3}{3h^2} \right | _{0} ^{h} = \f{h}{6} \end{align*}
 
 
-
-
 \item Solve the BVP in Problem 1 by the Galerkin method with the hat functions and $M=10$.
 Compare your result with the exact solution.
 As in Problem 1, investigate how the error of the Galerkin method scales with $(1/M)$.
 
-
-
 \bigskip
-\textbf{Solution:} The solution is obtained by the following code, and I include plots of the numerical solution and exact solution (Figure 1) and the scaling of error with $(1/M)$ (Figure 2).
+\textbf{Solution:} The solution is obtained by the following code, and I include plots of the numerical solution and exact solution (Figure 4), the error (Figure 5) and the scaling of error with $(1/M)$ (Figure 6).
 
-\lstinputlisting[language=Matlab]{andy_hw09_prb01.m}
+I verified that my matrix is symmetric, and I can't find why my error is not as small as the figure you provide.
+I tried using MATLAB's ``quad'' to do the integration of the integrals numerically, and this did not help.
+Note that although there is a loop over $M$, the code only runs for $M=10$, on which I did all of my troubleshooting.
+
+\lstinputlisting[language=Matlab]{andy_hw09_prb03.m}
 
 \begin{figure}[h!]
   \centering
-    \includegraphics[width=0.45\textwidth]{andy_hw09_prb01_01.pdf}
-  \caption{Exact and numerical solutions of the BVP using the collocation method with $M=10$.}
+    \includegraphics[width=0.45\textwidth]{andy_hw09_prb03_01_m10.pdf}
+  \caption{Exact and numerical solutions of the BVP using the Galerkin method with $M=10$.}
 \end{figure}
 
 \begin{figure}[h!]
   \centering
-    \includegraphics[width=0.45\textwidth]{andy_hw09_prb01_02.pdf}
-  \caption{Scaling of the maximum error the collocation solution with $(1/M)$. We observe that error scales super-linearly (perhaps quadratically) with $1/M$, indicating that the error decrease scales sub-linearly with the decrease in $h$ (where by $h$ I mean the point spacing, which makes sense here, where the points are evenly spaced).}
+    \includegraphics[width=0.45\textwidth]{andy_hw09_prb03_01_m10_error.pdf}
+  \caption{Error of the solution to the BVP using the Galerkin method with $M=10$.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw09_prb03_02.pdf}
+  \caption{Scaling of the maximum error the Galerkin solution with $(1/M)$.
+    All errors are close in magnitude, and do not decrease with $M$ as would be expected. This is likely a coding error on my behalf.}
 \end{figure}
 
 \end{enumerate}
-
-\clearpage
-\pagebreak
-{\huge Appendix 1: ODE Functions}
-%% \lstinputlisting[language=Matlab]{andy_hw07_prb05_ODE.m}
-%% \lstinputlisting[language=Matlab]{andy_hw08_prb01_ODEh.m}
-
-\clearpage
-\pagebreak
-{\huge Appendix 2: Numerical Methods}
-
-%% \lstinputlisting[language=Matlab]{andy_hw08_prb08_r.m}
-%% \lstinputlisting[language=Matlab]{andy_MEr.m}
 
 \end{document}
 
