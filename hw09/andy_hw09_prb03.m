@@ -20,9 +20,9 @@ disp(r);
 
 
 % build A
-qmid = -2.*(xmids)./((1+(xmids)).^2);
+qmid = -2./((1+(xmids)).^2);
 % push evaluation forward so that the matrix is symmetric
-qmidh = -2.*(xmids(1:end-1)+h/2)./((1+(xmids(1:end-1)+h/2)).^2);
+qmidh = -2./((1+(xmids(1:end-1)+h/2)).^2);
 offdiag = (1/h+qmidh.*h./6);
 A = spdiags((-2/h+qmid.*2.*h./3),0,M,M)+spdiags([0;offdiag],1,M,M)...
     +spdiags([offdiag;0],-1,M,M);
