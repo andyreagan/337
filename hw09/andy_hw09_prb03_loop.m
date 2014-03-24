@@ -1,6 +1,6 @@
 % HW09 Problem 3
 %
-% solve BVP by Galerkin method
+% solve BVP by  method
 
 Mvec = [1,2,5,10,15,20,30,40,60,80,100,120]';
 Mvec = [10,20,40]';
@@ -143,6 +143,7 @@ for j=1:length(Mvec)
 end
 
 %% plot error versus 1/M
+
 figure;
 tmpfigh = gcf;
 clf;
@@ -163,4 +164,7 @@ plot(1./Mvec,errorvec,'LineWidth',2,'Color','b')
 set(gca, 'fontsize',18)
 xlabel('1/M','FontSize',20)
 ylabel('Max error','FontSize',20)
-psprintcpdf_keeppostscript(sprintf('andy_hw09_prb03_02'));
+
+psprintcpdf_keeppostscript(sprintf('andy_hw09_prb03_%02g',2));
+
+% close all;
