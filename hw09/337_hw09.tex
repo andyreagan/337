@@ -153,10 +153,6 @@ As in Problem 1, investigate how the error of the Galerkin method scales with $(
 \bigskip
 \textbf{Solution:} The solution is obtained by the following code, and I include plots of the numerical solution and exact solution (Figure 4), the error (Figure 5) and the scaling of error with $(1/M)$ (Figure 6).
 
-I verified that my matrix is symmetric, and I can't find why my error is not as small as the figure you provide.
-I tried using MATLAB's ``quad'' to do the integration of the integrals numerically, and this did not help.
-Note that although there is a loop over $M$, the code only runs for $M=10$, on which I did all of my troubleshooting.
-
 \lstinputlisting[language=Matlab]{andy_hw09_prb03.m}
 
 \begin{figure}[h!]
@@ -174,9 +170,8 @@ Note that although there is a loop over $M$, the code only runs for $M=10$, on w
 \begin{figure}[h!]
   \centering
     \includegraphics[width=0.45\textwidth]{andy_hw09_prb03_02.pdf}
-  \caption{Scaling of the maximum error the Galerkin solution with $(1/M)$.
-    All errors are close in magnitude, and do not decrease with $M$ as would be expected. This is likely a coding error on my behalf.}
-\end{figure}
+  \caption{Scaling of the maximum error the Galerkin solution with $(1/M)$. Error decreases with larger $M$, as would be expected.} 
+    \end{figure}
 
 \end{enumerate}
 
