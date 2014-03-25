@@ -1,0 +1,77 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amsthm,amssymb,fullpage,graphicx,hyperref,listings}
+\usepackage{listings,color,setspace}
+\author{Andy Reagan}
+\title{Math 337 Homework 11}
+
+     \def\NN{\mathbb{N} }
+     \def\ZZ{\mathbb{Z} }
+     \def\QQ{\mathbb{Q} }
+     \def\RR{\mathbb{R} }
+     \def\CC{\mathbb{C} }
+     \def\f{\frac }
+     \def\b{\begin }
+     \def\e{\end }
+     \def\Log{\text{Log} \,}
+     \def\Re{\text{Re} \, }
+
+\lstset{language=MATLAB,
+basicstyle=\ttfamily\scriptsize\singlespacing,
+keywordstyle=\color{black},
+stringstyle=\color{black},
+commentstyle=\color{black},
+morecomment=[l][\color{black}]{\#},
+frame=L,
+xleftmargin=\parindent,
+%%numbers=left,                   %% where to put the line-numbers
+%%numberstyle=\scriptsize,      %% the size of the fonts that are used for the line-numbers
+%%stepnumber=1,                   %% the step between two line-numbers. If it is 1 each line will be numbered
+numbersep=5pt,
+breaklines=true,        %% sets automatic line breaking
+breakatwhitespace=false,    %% sets if automatic breaks should only happen at whitespace
+escapeinside={\%*}{*)} 
+}
+
+
+     \newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}}
+     \newcommand{\partialdiff}[2]{\frac{\partial #1}{\partial #2}}
+     \newcommand{\pdiffsq}[2]{\frac{\partial^2 #1}{{\partial #2}^2}}
+     \newcommand{\pdiffcu}[2]{\frac{\partial^3 #1}{{\partial #2}^3}}
+     \newcommand{\pdiffhi}[3]{\frac{\partial^#3 #1}{{\partial #2}^#3}}
+     \newcommand{\diff}[2]{\frac{{\rm d}#1}{{\rm d}#2}}
+     \newcommand{\diffsq}[2]{\frac{{\rm d}^{2}#1}{{\rm d} {#2}^2}}
+     \newcommand{\diffhi}[3]{\frac{{\rm d}^#3 #1}{{\rm d} {#2}^#3}}
+     \newcommand{\tdiff}[2]{\mbox{d} #1/\mbox{d} #2}
+     \newcommand{\tdiffsq}[2]{\mbox{d}^{2} #1/\mbox{d} {#2}^2}
+     \newcommand{\tpdiff}[2]{\partial #1/\partial #2}
+     \newcommand{\tpdiffsq}[2]{\partial^2 #1/\partial {#2}^2}
+     \newcommand{\bvec}[1]{\vec{ {\bf #1 } }}
+     \newcommand{\oh}[1]{O(h^{{#1}})}
+
+\begin{document}
+\maketitle
+
+\begin{enumerate}
+
+\item Differentiating the first equation WRT $x$ and the second equation WRT $y$ we have
+\begin{align*} u_{xy} &= v_{yy}\\
+v_{xx} &= -u_{yx}.\end{align*}
+Requiring that $u$ be twice continuously differentiable, we will have that $u_{xy} = u_{yx}$ and substituting this in, we are left with
+\[ v_{xx} + v_{yy} = 0 .\]
+Commonly known as Laplace's equation, this is an elliptic PDE.
+
+\item For this PDE we have that $A=x,C=-1,$ and $D=1/2$. Otherwise, $B=E=F=0$.
+Therefore, we classify this PDE based on $B^2-4AC = x$ to be of any type, since the equation is solvable depending on $x$.
+However, we note that this equation is not really of type parabolic, since along $x=0$ it is not a partial differential equation ($x$ does not change).
+Therefore, when $x>0$ this equation is hyperbolic and when $x<0$ this equation is elliptic.
+For $x>0$ we have the real characteristics given by
+\[ \left ( \diff{y}{x} \right ) _{\Gamma} = \f{B\pm \sqrt{B^2-4AC}}{A} = \pm \f{1}{\sqrt{x}} .\]
+To solve this equation, we integrate WRT $x$
+\[ y = \pm \int \f{1}{\sqrt{x}} dx = \pm 2\sqrt{x} ,\]
+so the characteristics are $\pm 2\sqrt{x}$.
+\end{enumerate}
+
+\end{document}
+
+
+
