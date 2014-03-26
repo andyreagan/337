@@ -53,15 +53,43 @@ escapeinside={\%*}{*)}
 
 \begin{enumerate}
 
+\item I code up the scheme from (12.12) on the IBVP (12.1-12.3) in the notes.
+
+We observe that the solution is accurate for $h = 0.1, \kappa = 0.004$, which agrees with the condition that $\kappa < 0.5 \cdot h^2$, from Eq (12.17). When $h$ is decreased, I expect that the solution may no longer be stable since the above condition is not satisfied.
+
+Indeed this is what we find.
+
+\lstinputlisting[language=Matlab]{andy_hw12_prb01.m}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw12_prb01_02.png}
+  \caption{The numerical and exact solution for $h=0.1$.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw12_prb01_03.png}
+  \caption{The error for $h=0.1$.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw12_prb01_05.png}
+  \caption{The numerical and exact solution for $h=0.05$.
+           Since the stability condition on $\kappa$ (12.17) is no longer satisfied, the solution behaves badly.
+           My code stops when the minimax principle is violated.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw12_prb01_06.png}
+  \caption{The error for $h=0.05$.}
+\end{figure}
+
+\clearpage
+\pagebreak
 \item 
-
-%% \lstinputlisting[language=Matlab]{andy_hw12_prb01.m}
-
-%% \begin{figure}[h!]
-%%   \centering
-%%     \includegraphics[width=0.45\textwidth]{andy_hw11_prb01_01.pdf}
-%%   \caption{Exact and numerical solutions of the BVP using the Galerkin method with $M=10$.}
-%% \end{figure}
 
 \end{enumerate}
 
