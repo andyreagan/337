@@ -10,10 +10,10 @@ line_color(2,:)=[0 0 0];   % black
 line_color(3,:)=[0 0 1];   % blue
 line_style=char('-','--','-.');
 
-% theta=1/2;          % 0.5 => Crank-Nicolson method
-theta=1; %  => implicit Euler method
+theta=1/2;          % 0.5 => Crank-Nicolson method
+% theta=1; %  => implicit Euler method
 
-p=3;                % parameter characterizing the order of the lowest derivative that
+p=0;                % parameter characterizing the order of the lowest derivative that
 %  is discontinuous in the initial condition
 
 coeff_r=input(' r = 1/(coeff_r*h); thus, enter 3 or 6: coeff_r = ');   % kappa = r*h^2

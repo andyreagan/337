@@ -165,7 +165,7 @@ I summarize my results in the follwing table:
 $\theta$ & $p$ & $r = 1/(2h)$ & $r=1/(4h)$ \\
       \hline
       \hline
-1/2 & 0  & N/A & 1.2751  \\
+1/2 & 0  & N/A & 1.28,0.09  \\
      &  1  & N/A & N/A  \\
      &  2  & N/A & 2.1360 \\
      &  3  & N/A & 2.1002 \\
@@ -193,7 +193,30 @@ Perhaps for an IC that is known to be infinitely differentiably continuous the C
 (4) In this case, I could solve the PDE with either the backwards difference ($\theta  = 1$ method with any $\kappa$, or with the explicit method with $\kappa$ such that $r$ is not near the stability threshold of $1/2$.
 The solution will be more accurate for the explicit method with small $\kappa$, since the error decreases more quickly with $h$.
 
-(5) 
+(5) The expression for $\rho$ was 
+\begin{align*} \rho  =  \f{ 1+ (1-\theta) z} {1-\theta z}, \end{align*}
+where $z = -4r \sin ^2 \left ( \beta h / 2 \right ) $.
+Fixing $\beta h = \pi$ we have that $z = -4r \sin ^2 \left ( \pi / 2 \right )  = -4r $.
+Therefore, 
+\[ \rho _\pi = \f{1+ 4(\theta-1)r}{1+4\theta r} . \]
+For $h = 0.05,$ we set $\rho$ between $[1/(2h),1/(4h)]$ and then $\kappa = h^2 r$.
+Therefore we make a plot of
+\[ \log \left ( \left | \f{1+ 4(\theta-1)r}{1+4\theta r} \right | ^{t_{\max} / (h^2 r) } \right ) \]
+versus $r$.
+I also make plots for the above, without taking the log (which I find easier to interpret).
+For $\theta = 1$ we that the the harmonic $\rho _\pi$ has decreased to machine error by the time $t = 0.5$, which agrees with the stability of our solution for $\theta =1, p = 0$.
+
+For $\theta = 1/2$, we have for $r = 1/(4h)$ that the Fourier mode represented by $\rho _\pi$ has decreased almost to 0.
+This agrees with the fact that our solution was stable for this value of $r$.
+But for $r = 1/(2h)$ the mode $\rho _\pi$ has yet to decay significantly, and dominates the final solution at $t = 0.5$.
+If we continue to solve, this harmonic will decrease to 0, but it is still large at $t = 0.5$ and this confirms our observation that the solution at $t = 0.5$ is incorrect.
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.8\textwidth]{andy_hw13_prb05_05.png}
+  \caption{The growth factor of the Fourier mode $\rho _\pi$ at time $t = 0.5$ for the $\theta$-family of methods with $\theta = 1/2,1$.
+           On the top, we take the log of the error growth, and on the bottom we plot it directly.}
+\end{figure}
 
 (6) Based on our exploration of the CN method applied to the heat equation, the choice of parameters depends on how much we know about the parabolic PDE problem we are solving, and the IC we are given.
 
