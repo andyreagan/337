@@ -123,15 +123,83 @@ Therefore the eigenvalues of
 for $\lambda _j$ an eigenvalue of $A$ are
 \[ (a \lambda _j + b) (c\lambda _j + d) ^{-1}  = \f{1 + r(1-\theta) \lambda _j }{1 - r\theta \lambda _j}. \]
 
-\item 
+\item I solve the IBVP using CN in the follow code:
 
-%% \lstinputlisting[language=Matlab]{andy_hw13_prb04.m}
+\lstinputlisting[language=Matlab]{andy_hw13_prb04.m}
 
-%% \begin{figure}[h!]
-%%   \centering
-%%     \includegraphics[width=0.45\textwidth]{andy_hw12_prb01_02.png}
-%%   \caption{The numerical and exact solution for $h=0.1$.}
-%% \end{figure}
+In the following two figures I present the numerical solution for each value of $\kappa$ and the error for each $\kappa$.
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw13_prb04_02.png}
+  \caption{The numerical and exact solution for each $\kappa$ using the CN method on the IBVP of Problem 1, HW 12.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw13_prb04_03.png}
+  \caption{The numerical error for each $\kappa$ using the CN method on the IBVP of Problem 1, HW 12.}
+\end{figure}
+
+Questions: (i) answered in the assignment, (ii) the error changes sign because the $u_{xxxx}$ term overtakes the $u_{xxxxxx}$ term in the leading local truncation order and (iii) it increases for small $\kappa$ because the errors in $\kappa^2$ and $h^2$ do not cancel as much.
+
+More specifically for parts (ii) and (iii), the $u_{xxxxxx}$ term has coefficient $\pi^6/12$ and the $u_{xxxx}$ has $-\pi^4/12$ so when $\kappa ^2 > h^2/pi^2$ the term in $\kappa$ dominates. Note that $1/\pi^2 \simeq .01$ so when $\kappa$ goes $0.05\to 0.025$ the error in $h$ takes over.
+
+When $\kappa = .01$, the error in $\kappa^2$ is now smaller than it was for $\kappa = 0.025$. But, the error in $h^2$ is the same, and has been negative all along. So now that the error in $\kappa$ which was positive, is going away, the total error increases.
+
+Finally (iv) I find the error versus $\kappa$ in a in a vector called \verb|errors|, the values of $k$ in a vector \verb|kvec| and find the exponent by fitting a line to the points in log space using least squares estimation: 
+
+\verb| p = polyfit(log(kvec),log10(abs(errors)),1); |.
+
+We find $p = -1.91$ indicating that the errors decrease with $\kappa$ nearly proportional to $\kappa ^2$.
+
+\item The code which I inserted (in addition to a \verb|clear U| at line 38 so the code runs) is:
+
+\lstinputlisting[language=Matlab,firstline=59,lastline=66]{andy_hw13_prb05.m}
+
+I summarize my results in the follwing table:
+\begin{table}[h]
+  \begin{center}
+    \begin{tabular}{cccc}
+      \hline
+$\theta$ & $p$ & $r = 1/(2h)$ & $r=1/(4h)$ \\
+      \hline
+      \hline
+1/2 & 0  & N/A & 1.2751  \\
+     &  1  & N/A & N/A  \\
+     &  2  & N/A & 2.1360 \\
+     &  3  & N/A & 2.1002 \\
+     &  4  & N/A & 2.0443 \\
+1 & 0  & 1.1897 & 1.1426  \\
+     &  1  & 1.1215 & 1.0773  \\
+     &  2  & 1.1411 & 1.1071 \\
+     &  3  & 1.1414 & 1.1076 \\
+     &  4  & 1.1409 & 1.1067 \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{table}
+
+Questions: (1) The discretization error is $O(\kappa + h^2 )$, but we observe $\gamma \approx 1$ because here $\kappa$ is large compared to $h$, as we have set $\kappa = 1/(2h)$ and $\kappa = 1/(4h)$.
+
+(2) The solution appears jagged for $\theta = 1/2$ and $r = 1/(2h)$ all of the time. For $\theta = 1/2$ and $r = 1/(4h)$ the solution does not appear jagged, as the solution is generally stable (so we do not observe the growth of the highest frequency fourier harmonic of error near the discontinuity in the IC).
+
+We do not observe any jaggedness for $\theta = 1$.
+
+(3) The main difference is that for CN the solution does not become stable even for larger $p$, whereas the explicit method does become stable as the IC becomes more continuous (differentially continuous further down).
+
+Perhaps for an IC that is known to be infinitely differentiably continuous the CN would be appropriate, but I would still stick to the explicit method for $\kappa = h/2$.
+
+(4) In this case, I could solve the PDE with either the backwards difference ($\theta  = 1$ method with any $\kappa$, or with the explicit method with $\kappa$ such that $r$ is not near the stability threshold of $1/2$.
+The solution will be more accurate for the explicit method with small $\kappa$, since the error decreases more quickly with $h$.
+
+(5) 
+
+(6) Based on our exploration of the CN method applied to the heat equation, the choice of parameters depends on how much we know about the parabolic PDE problem we are solving, and the IC we are given.
+
+If the IC that are given is smooth, then we need only to pick $\kappa$, $h$ such that $r<1/2$ and with $h$ such that the error is sufficiently small.
+
+If we do not know that the IC is smooth, or even continuous, then we can still use the CN method but we need to restrict $\kappa$ such that $r$ is not near the stability threshold of $1/2$.
 
 \end{enumerate}
 
