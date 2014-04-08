@@ -224,6 +224,68 @@ If the IC that are given is smooth, then we need only to pick $\kappa$, $h$ such
 
 If we do not know that the IC is smooth, or even continuous, then we can still use the CN method but we need to restrict $\kappa$ such that $r$ is not near the stability threshold of $1/2$.
 
+\clearpage
+\pagebreak
+\item Bonus I: First, I note that equation (13.6) is:
+\[ \f{1}{\kappa} \partial _t U_{m}^{n} = \f{1}{2h^2} \left [ \partial _x ^2 U_{m}^{n} + \partial _x ^2 U_{m}^{n+1} \right ]~~~~~~~~~~~~~~~~(13.6).\]
+When $\epsilon = 0$, equations (13.11) and (13.12) become
+\begin{align*} U_{m}^{n+1} &= \overline{U}_{m} + \f{\kappa}{2} \overline{U}_{m,t} + \f{1}{2!} \left  ( \f{\kappa}{2} \right ) ^2 \overline{U}_{m,tt} + \f{1}{3!} \left  ( \f{\kappa}{2} \right ) ^3 \overline{U}_{m,ttt} + O (\kappa ^4) \\
+U_{m}^{n} &= \overline{U}_{m} - \f{\kappa}{2} \overline{U}_{m,t} + \f{1}{2!} \left  ( \f{\kappa}{2} \right ) ^2 \overline{U}_{m,tt} - \f{1}{3!} \left  ( \f{\kappa}{2} \right ) ^3 \overline{U}_{m,ttt} + O (\kappa ^4) \end{align*}
+where there is only $O(\kappa ^4)$ terms truncated because the expansion does not involve $m$.
+Plugging the above two equations into the LHS of (13.6), we have 
+\begin{align*} \f{1}{\kappa} \left ( U_{m} ^{n+1} - U_{m} ^{n} \right ) &= \f{1}{\kappa} \overline{U}_{m} + \f{1}{2} \overline{U}_{m,t} + \f{1}{2!} \f{\kappa}{4}  \overline{U}_{m,tt} + O (\kappa ^3)\\
+&~~~~~- \left [ \f{1}{\kappa} \overline{U}_{m} - \f{1}{2} \overline{U}_{m,t} + \f{1}{2!} \f{\kappa}{4}  \overline{U}_{m,tt} + O (\kappa ^3) \right ]\\
+&= \overline{U} _{m,t} \left ( \f{1}{2} + \f{1}{2} \right ) + \left ( \f{1}{3!} \f{\kappa ^2}{8} + \f{1}{3!} \f{\kappa ^2}{8} \right ) \overline{U}_{m,ttt} + O(\kappa ^2) \\
+&= \overline{U} _{m,t} + O(\kappa ^2) \end{align*} 
+which verifires (13.13).
+
+
+Now the important observation about the truncation error of the $U_{m\pm \epsilon} ^{n+1}$ and $U_{m\pm \epsilon} ^n$: since the expansion for $\pm\epsilon$ is being added to eachother, the error terms in $\kappa^2 h$ and $h^2 \kappa$ will cancel due to the symmetry, in both the $n,n+1$ cases.
+Specifically, the $\overline{U} _{m,xtt}$ (truncation error $O(\kappa ^2 h)$) cancels between different $\epsilon$ for each $n,n+1$ (since $\epsilon$ is linear and has different signs for the $U_{m\pm1}$, not appearing the $U_m$) and the $\overline{U} _{m,xxt}$ (truncation error $O(h^2 \kappa)$) cancels not within each $n,n+1$, but across them.
+That is, $\kappa$ is in linear on the $\overline{U} _{m,xxt}$, so the sign is opposite between the $n,n+1$ expansions.
+Here, I've only noted the cancellation of the $\kappa^2 h$ and $h^2 \kappa $ terms since we are only expanding through the second order in each, i.e. the order of truncation for each $U_{m+\epsilon} ^{n+\{0,1\}}$ will be $O(\kappa ^3 + \kappa ^2 h + h^2\kappa + h^3)$, which we can also see directly are the local truncation errors, since they are the next terms in (13.11,13.12).
+
+Specifically, I'm using the following form of (13.11,13.12): (where $\alpha = \{ 0,-1 \}$)
+\begin{align*} U_{m+\epsilon} ^{n-\alpha} &= \overline{U}_m + \left ( \f{\alpha \kappa}{2} \overline{U} _{m,t} + \epsilon h \overline{U} _{m,x} \right ) \\
+&~~~~+\f{1}{2!} \left ( \left ( \f{\alpha \kappa }{2 } \right ) ^2 \overline{U} _{m,tt} + \alpha \kappa \epsilon h \overline{U} _{m,xt} + \left ( \epsilon h \right ) ^2 \overline{U} _{m,xx} \right )\\
+&~~~~+O(\kappa ^3 + \kappa ^2 h + h^2\kappa + h^3) \end{align*}
+
+Since writing out the whole expansion is not very insightful (I have done such), I will instead note directly which terms cancel, from where, when Eqs (13.11,13.12) are plugged into the RHS of Eq (13.6).
+First let's talk about the $\overline{U}_m$ terms.
+Since the $\delta _x ^2$ discretization has $U_{m+1} -2 U_m + U_{m-1}$ in it, and the $\overline{U}_m$ is unchanged for each, it has the coefficients $(1-2+1)=0$ and cancels in the $\delta _x ^2$, for both $n$ and $n+1$.
+
+Next, again for each $n$ and $n+1$, the $\overline{U} _{m,tt}$ will also not change for each term in the $\delta _x ^2$.
+Therefore, the coefficient will be $(1-2+1)=0$ and these terms will cancel across the $\delta$.
+
+The term $\f{1}{2!} 2 \f{\kappa}{2} \epsilon h \overline{U} _{m,xt}$ in not contained in the middle of the $\delta_x^2$ expansion, since $\epsilon = 0$ there.
+It is contained in each the $U_{m\pm 1}$ for both $n,n+1$, and there $\epsilon = \pm 1$, so they cancel with each $n,n+1$ expansion.
+
+Finally, we deal with the $\f{1}{2!} (\epsilon h)^2 \overline{U} _{m,xx}$.
+Within eacn $n,n+1$, since the $\epsilon$ is squared, the sign is the same for both the $\epsilon = \pm 1$.
+Therefore, they add within each $n,n+1$.
+
+Taking all of this together, we have proven that
+\[ \f{1}{2h^2} \left [ \partial _x ^2 U_{m}^{n} + \partial _x ^2 U_{m}^{n+1} \right ] = \overline{U} _{m,xx} + O(\kappa ^2 + h ^2 ) .\]
+
+\item Bonus II: Collecting terms in $m,n$ for the Dufort-Frankel scheme we have:
+\[ (1+2r) U_{m} ^{n+1} = 2r U_{m+1} ^n + (1-2r) U_{m}^{n-1} + 2r U_{m-1} ^n. \]
+Since this in linear, we replace $U$ with the error $\epsilon$ 
+\[ (1+2r) \epsilon_{m} ^{n+1} = 2r \epsilon_{m+1} ^n + (1-2r) \epsilon_{m}^{n-1} + 2r \epsilon_{m-1} ^n. \]
+Now we expand $\epsilon$ with a specific Fourier series, namely $\epsilon \to \rho ^n e^{i\beta m h}$:
+\[ (1+2r) \rho^{n+1} e^{i\beta (m) h}= 2r \rho^{n} e^{i\beta (m+1) h}+ (1-2r) \rho^{n-1} e^{i\beta (m) h}+ 2r \rho^{n} e^{i\beta (m-1) h}. \]
+Cancelling $\rho ^{n-1} e^{i\beta m h}$, we are left
+\[ (1+2r) \rho^{2} = 2r \rho e^{i\beta h}+ (1-2r) + 2r \rho e^{-i\beta h}. \]
+Now we turn to plotting the largest magnitude root $\rho$ for $\beta h \in [0,\pi]$ and $r \in [0,10]$.
+The following code does just that:
+
+\lstinputlisting[language=Matlab]{andy_hw13_prb07.m}
+
+\begin{figure}[t!]
+  \centering
+    \includegraphics[width=0.45\textwidth]{andy_hw13_prb07_01.png}
+  \caption{Magnitude of the largest root $\rho$ in the Von Nuemann stability analysis of the Dufort-Frankel scheme.}
+\end{figure}
+
 \end{enumerate}
 
 \end{document}
