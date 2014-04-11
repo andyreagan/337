@@ -65,8 +65,61 @@ escapeinside={\%*}{*)}
 
 \begin{enumerate}
 
-\item 
+\item Done.
 
+\item Done.
+
+\item First we'll rewrite the half angle formula into a form more useful directly (starting the form given above Eq 12.35 in the notes):
+\begin{align*} & 1-\cos \alpha = 2 \sin ^2 \left ( \f{\alpha}{2} \right ) \\
+&2-2\cos \alpha = 4 \sin ^2 \left ( \f{\alpha}{2} \right ) \\
+&2\cos \alpha - 2= - 4 \sin ^2 \left ( \f{\alpha}{2} \right ) \end{align*}
+Now, we'll show Eq 15.12 directly.
+\begin{align*} \delta _x ^2 \left [ e^{i\beta m h} e^{i\gamma l h} \right ] &= e^{i\beta (m+1) h} e^{i\gamma l h} -2 e^{i\beta m h} e^{i\gamma l h} + e^{i\beta (m-1) h} e^{i\gamma l h}\\
+&= e^{i\beta m h} e^{i\gamma l h} \left [ e^{i\beta h}-2  + e^{-i\beta h} \right ]\\
+&= e^{i\beta m h} e^{i\gamma l h} \left [ 2\cos (\beta h) -2 \right ]\\
+&= e^{i\beta m h} e^{i\gamma l h} \left [ -4 \sin ^2 \left ( \f{\beta h}{2} \right ) \right ]\\
+&= -4 \sin ^2 \left ( \f{\beta h}{2} \right )  \left [ e^{i\beta m h} e^{i\gamma l h}\right ]\end{align*}
+We now do the same for Eq 15.13:
+\begin{align*} \delta _y ^2 \left [ e^{i\beta m h} e^{i\gamma l h} \right ] &= e^{i\beta m h} e^{i\gamma (l+1) h} -2 e^{i\beta m h} e^{i\gamma l h} + e^{i\beta m h} e^{i\gamma (l-1) h}\\
+&= e^{i\beta m h} e^{i\gamma l h} \left [ e^{i\gamma h}-2  + e^{-i\gamma h} \right ]\\
+&= e^{i\beta m h} e^{i\gamma l h} \left [ 2\cos (\gamma h) -2 \right ]\\
+&= e^{i\beta m h} e^{i\gamma l h} \left [ -4 \sin ^2 \left ( \f{\gamma h}{2} \right ) \right ]\\
+&= -4 \sin ^2 \left ( \f{\gamma h}{2} \right )  \left [ e^{i\beta m h} e^{i\gamma l h}\right ]\end{align*}
+
+% 4
+\item
+
+% 5
+\item
+
+% 6
+\item First I make note of the very important considerations mentioned in the paragraph following Eq 15.37, which make clear the notation that we are using.
+Namely, we are solving for a solution in a 2D space (with solution represented as a matrix), where discretizations have been made in orthogonal directions.
+We choose to break this into a smaller problems: we solve not for the full solution at the next timestep, but rather we solve for each column, one at a time.
+In doing so, we first break the problem in columns, which in turn determines which operators act as matrices on a columns, and which operate across columns.
+We have chosen to break into columns where $m$ varies, namely columns for each $l$.
+Doing this, we arrive at Eq 15.37.
+To make this more clear, consider Eq 15.37 in matrix form:
+\begin{align*} & \left [ \left ( \begin{array}{ccc} 1 & 0 & 0\\ 0 & 1 & 0\\ 0 & 0 & 1 \end{array} \right )  + \f{r}{2} \left ( \begin{array}{ccc} -2 & 1 & 0\\ 1 & -2 & 1\\ 0 & 1 & -2 \end{array} \right )\right ] \left ( \begin{array}{c} U_{1,l} \\ U_{2,l} \\ U_{3,l} \end{array} \right ) ^{*} = \left ( \begin{array}{c} U_{1,l} \\ U_{2,l} \\ U_{3,l} \end{array} \right ) ^{n} \\
+&~~~~~~~~~~~~~~~+ \f{r}{2} \left [ \left ( \begin{array}{c} U_{1,l+1} \\ U_{2,l+1} \\ U_{3,l+1} \end{array} \right ) ^{n} - 2\left ( \begin{array}{c} U_{1,l} \\ U_{2,l} \\ U_{3,l} \end{array} \right ) ^{n} + \left ( \begin{array}{c} U_{1,l-1} \\ U_{2,l-1} \\ U_{3,l-1} \end{array} \right ) ^{n}\right ] \end{align*}
+Since $L = 5$, we solve for $U^{*}$ for $l = 1\cdot 4$, where the BC of $U^{*}$ at $l = 0, 5$ are given by the prescribed conditions.
+Here, they are just 0.
+We observe that for $l=1$ and $l=4$ the RHS $U^{n}$ will have $l=0,5$ respectively, where here we invoke the BC.
+So what we are really solving for is a $(M-2) \times (L-2)$ matrix from a $M\times L$ matrix, solving for only the inner points.
+
+We could write out the previous equation for each $L$, but this is cumbersome and is not how we will solve the problem on a computer.
+Namely, we will solve this as a matrix, for all of the columns.
+Without further adieu, this is:
+\begin{align*} & \left [ \left ( \begin{array}{ccc} 1 & 0 & 0\\ 0 & 1 & 0\\ 0 & 0 & 1 \end{array} \right )  + \f{r}{2} \left ( \begin{array}{ccc} -2 & 1 & 0\\ 1 & -2 & 1\\ 0 & 1 & -2 \end{array} \right )\right ] \left ( \begin{array}{cccc} U_{1,1} & U_{1,2} & U_{1,3} & U_{1,4 }\\ U_{2,1} & U_{2,2} & U_{2,3} & U_{2,4 } \\ U_{3,1} & U_{3,2} & U_{3,3} & U_{3,4 }  \end{array} \right ) ^{*} \\
+& ~~~~~~~~~= \left ( \begin{array}{cccc} U_{1,1} & U_{1,2} & U_{1,3} & U_{1,4 }\\ U_{2,1} & U_{2,2} & U_{2,3} & U_{2,4 } \\ U_{3,1} & U_{3,2} & U_{3,3} & U_{3,4 }  \end{array} \right ) ^{n} + \f{r}{2} \left [ \left ( \begin{array}{cccc} U_{1,2} & U_{1,3} & U_{1,4} & 0 \\ U_{2,2} & U_{2,3} & U_{2,4} & 0 \\ U_{3,2} & U_{3,2} & U_{3,4} & 0  \end{array} \right ) ^{n} \right.\\
+& ~~~~~~~~~\left. -2\left ( \begin{array}{cccc} U_{1,1} & U_{1,2} & U_{1,3} & U_{1,4 }\\ U_{2,1} & U_{2,2} & U_{2,3} & U_{2,4 } \\ U_{3,1} & U_{3,2} & U_{3,3} & U_{3,4 }  \end{array} \right ) ^{n} + \left ( \begin{array}{cccc} 0 & U_{1,1} & U_{1,2} & U_{1,3 }\\ 0 & U_{2,1} & U_{2,2} & U_{2,3 } \\ 0 & U_{3,1} & U_{3,2} & U_{3,3 }  \end{array} \right ) ^{n} \right ]\end{align*}
+
+Regardless about solving on the computer, from the above is obvious how the problem is split into columns.
+If it is not, just take the first column from every $3\times 4$ matrix for the first column problem, the second column from every $3\times 4$ matrix for the second column problem, and so forth.
+The boundary conditions have entered visibly only in $l$ since they are zero.
+If they were nonzero along $x=0$ or $x=M$ the $3\times 3$ matrix on the LHS (resulting from the addition) would need 
+% 7
+\item
 
 \end{enumerate}
 \end{document}
