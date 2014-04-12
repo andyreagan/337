@@ -1,6 +1,7 @@
-% HW15 Problem 2
+% HW15 Problem 8
 %
-% Solve the 2D IBVP using the simple explicit method
+% Solve the 2D IBVP using Peaceman-Rachford ADI method
+% A coding bonanza unfolds below
 
 %% parameters
 pb = 1; % whether to plot intermediate solution

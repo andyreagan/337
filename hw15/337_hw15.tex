@@ -100,7 +100,7 @@ In doing so, we first break the problem in columns, which in turn determines whi
 We have chosen to break into columns where $m$ varies, namely columns for each $l$.
 Doing this, we arrive at Eq 15.37.
 To make this more clear, consider Eq 15.37 in matrix form:
-\begin{align*} & \left [ \left ( \begin{array}{ccc} 1 & 0 & 0\\ 0 & 1 & 0\\ 0 & 0 & 1 \end{array} \right )  + \f{r}{2} \left ( \begin{array}{ccc} -2 & 1 & 0\\ 1 & -2 & 1\\ 0 & 1 & -2 \end{array} \right )\right ] \left ( \begin{array}{c} U_{1,l} \\ U_{2,l} \\ U_{3,l} \end{array} \right ) ^{*} = \left ( \begin{array}{c} U_{1,l} \\ U_{2,l} \\ U_{3,l} \end{array} \right ) ^{n} \\
+\begin{align*} & \left [ \left ( \begin{array}{ccc} 1 & 0 & 0\\ 0 & 1 & 0\\ 0 & 0 & 1 \end{array} \right )  - \f{r}{2} \left ( \begin{array}{ccc} -2 & 1 & 0\\ 1 & -2 & 1\\ 0 & 1 & -2 \end{array} \right )\right ] \left ( \begin{array}{c} U_{1,l} \\ U_{2,l} \\ U_{3,l} \end{array} \right ) ^{*} = \left ( \begin{array}{c} U_{1,l} \\ U_{2,l} \\ U_{3,l} \end{array} \right ) ^{n} \\
 &~~~~~~~~~~~~~~~+ \f{r}{2} \left [ \left ( \begin{array}{c} U_{1,l+1} \\ U_{2,l+1} \\ U_{3,l+1} \end{array} \right ) ^{n} - 2\left ( \begin{array}{c} U_{1,l} \\ U_{2,l} \\ U_{3,l} \end{array} \right ) ^{n} + \left ( \begin{array}{c} U_{1,l-1} \\ U_{2,l-1} \\ U_{3,l-1} \end{array} \right ) ^{n}\right ] \end{align*}
 Since $L = 5$, we solve for $U^{*}$ for $l = 1\cdot 4$, where the BC of $U^{*}$ at $l = 0, 5$ are given by the prescribed conditions.
 Here, they are just 0.
@@ -110,15 +110,61 @@ So what we are really solving for is a $(M-2) \times (L-2)$ matrix from a $M\tim
 We could write out the previous equation for each $L$, but this is cumbersome and is not how we will solve the problem on a computer.
 Namely, we will solve this as a matrix, for all of the columns.
 Without further adieu, this is:
-\begin{align*} & \left [ \left ( \begin{array}{ccc} 1 & 0 & 0\\ 0 & 1 & 0\\ 0 & 0 & 1 \end{array} \right )  + \f{r}{2} \left ( \begin{array}{ccc} -2 & 1 & 0\\ 1 & -2 & 1\\ 0 & 1 & -2 \end{array} \right )\right ] \left ( \begin{array}{cccc} U_{1,1} & U_{1,2} & U_{1,3} & U_{1,4 }\\ U_{2,1} & U_{2,2} & U_{2,3} & U_{2,4 } \\ U_{3,1} & U_{3,2} & U_{3,3} & U_{3,4 }  \end{array} \right ) ^{*} \\
+\begin{align*} & \left [ \left ( \begin{array}{ccc} 1 & 0 & 0\\ 0 & 1 & 0\\ 0 & 0 & 1 \end{array} \right )  - \f{r}{2} \left ( \begin{array}{ccc} -2 & 1 & 0\\ 1 & -2 & 1\\ 0 & 1 & -2 \end{array} \right )\right ] \left ( \begin{array}{cccc} U_{1,1} & U_{1,2} & U_{1,3} & U_{1,4 }\\ U_{2,1} & U_{2,2} & U_{2,3} & U_{2,4 } \\ U_{3,1} & U_{3,2} & U_{3,3} & U_{3,4 }  \end{array} \right ) ^{*} \\
 & ~~~~~~~~~= \left ( \begin{array}{cccc} U_{1,1} & U_{1,2} & U_{1,3} & U_{1,4 }\\ U_{2,1} & U_{2,2} & U_{2,3} & U_{2,4 } \\ U_{3,1} & U_{3,2} & U_{3,3} & U_{3,4 }  \end{array} \right ) ^{n} + \f{r}{2} \left [ \left ( \begin{array}{cccc} U_{1,2} & U_{1,3} & U_{1,4} & 0 \\ U_{2,2} & U_{2,3} & U_{2,4} & 0 \\ U_{3,2} & U_{3,2} & U_{3,4} & 0  \end{array} \right ) ^{n} \right.\\
 & ~~~~~~~~~\left. -2\left ( \begin{array}{cccc} U_{1,1} & U_{1,2} & U_{1,3} & U_{1,4 }\\ U_{2,1} & U_{2,2} & U_{2,3} & U_{2,4 } \\ U_{3,1} & U_{3,2} & U_{3,3} & U_{3,4 }  \end{array} \right ) ^{n} + \left ( \begin{array}{cccc} 0 & U_{1,1} & U_{1,2} & U_{1,3 }\\ 0 & U_{2,1} & U_{2,2} & U_{2,3 } \\ 0 & U_{3,1} & U_{3,2} & U_{3,3 }  \end{array} \right ) ^{n} \right ]\end{align*}
 
 Regardless about solving on the computer, from the above is obvious how the problem is split into columns.
 If it is not, just take the first column from every $3\times 4$ matrix for the first column problem, the second column from every $3\times 4$ matrix for the second column problem, and so forth.
 The boundary conditions have entered visibly only in $l$ since they are zero.
-If they were nonzero along $x=0$ or $x=M$ the $3\times 3$ matrix on the LHS (resulting from the addition) would need 
+If they were nonzero along $x=0$ or $x=M$ the $3\times 3$ matrix on the LHS (resulting from the addition) would need a $\bvec{b}$ vector on the LHS when solving for each column, added outside what is already there, with the nonzero boundary conditions included at the beginning and end of this vector as we have done in the past.
+In the matrix form above, this would actually be a matrix, $\bvec{B}$.
+
+Next, we write Eq 15.34(b) 
+\begin{align*} & \left [ \left ( \begin{array}{cccc} 1 & 0 & 0 & 0\\ 0 & 1 & 0 & 0\\ 0 & 0 & 1 & 0\\ 0 & 0 & 0 & 1\end{array} \right )  - \f{r}{2} \left ( \begin{array}{cccc} -2 & 1 & 0 & 0 \\ 1 & -2 & 1 & 0\\ 0 & 1 & -2 & 1\\ 0 & 0 & 1 & -2\end{array} \right )\right ] \left ( \left ( \begin{array}{cccc} U_{1,1} & U_{1,2} & U_{1,3} & U_{1,4 }\\ U_{2,1} & U_{2,2} & U_{2,3} & U_{2,4 } \\ U_{3,1} & U_{3,2} & U_{3,3} & U_{3,4 }  \end{array} \right ) ^T \right ) ^{n+1} \\
+& ~~~~~~~~~= \left ( \left ( \begin{array}{cccc} U_{1,1} & U_{1,2} & U_{1,3} & U_{1,4 }\\ U_{2,1} & U_{2,2} & U_{2,3} & U_{2,4 } \\ U_{3,1} & U_{3,2} & U_{3,3} & U_{3,4 }  \end{array} \right )  ^T \right )  ^{*} + \f{r}{2} \left [ \left ( \left ( \begin{array}{cccc} U_{1,2} & U_{1,3} & U_{1,4} & 0 \\ U_{2,2} & U_{2,3} & U_{2,4} & 0 \\ U_{3,2} & U_{3,2} & U_{3,4} & 0  \end{array} \right ) ^T \right ) ^{*} \right.\\
+& ~~~~~~~~~\left. -2\left ( \left ( \begin{array}{cccc} U_{1,1} & U_{1,2} & U_{1,3} & U_{1,4 }\\ U_{2,1} & U_{2,2} & U_{2,3} & U_{2,4 } \\ U_{3,1} & U_{3,2} & U_{3,3} & U_{3,4 }  \end{array} \right ) ^T \right ) ^{*} + \left ( \left ( \begin{array}{cccc} 0 & U_{1,1} & U_{1,2} & U_{1,3 }\\ 0 & U_{2,1} & U_{2,2} & U_{2,3 } \\ 0 & U_{3,1} & U_{3,2} & U_{3,3 }  \end{array} \right ) ^T \right ) ^{*} \right ]\end{align*}
+
+where again we can solve this equation column by column for the three columns of $U^{n+1}$ in matrix form above.
+
 % 7
+\item This was already discussed in problem 6, in a manner in which is sufficient to code.
+But I will still elaborate more.
+Specifically, we first solve for $U ^*$ column by column, and the using this $U^*$, we solve for $U ^{n+1}$ column by column.
+
+I am inclined to try solving this as a matrix eqaution, as we discussed in class, and if I try this to compare, I will report on the results.
+Of course, this is only reasonable to try for the case of 0 boundary conditions, since even for Dirichlet BC the determination of the BC of the intermediate solution $U^*$ is no longer trivial.
+Pre-computing $\bvec{b}^*$ could, in theory, make this possible even for nonzero BC conditions.
+
+I'll note that I choose to update the BC for $U^{n+1}$ at the end of the time loop, since this makes the most sense to me (determing $U^{n+1}$ happens in one place).
+
+% 8
+\item I solve the problem using the method that was exhaustively elaborated upond above.
+
+I am able to solve the problem as a matrix, and gain a huge speedup by doing so.
+Namely, solving with a loop over the columns up to $t=3$:
+
+\verb|Elapsed time is 0.291936 seconds.|
+
+And solving with matrices:
+
+\verb|Elapsed time is 0.047398 seconds.|
+
+This is approximately a $6\times$ speedup, which is substantial.
+
+% 9
+\item Done.
+
+% 10 
+\item Attempt for Monday.
+
+% 11
+\item Somday.
+
+% Bonus 1 (12)
+\item
+
+% Bonus 2 (13)
 \item
 
 \end{enumerate}
