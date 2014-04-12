@@ -20,7 +20,7 @@ t = (t0:k:tf)';
 a = @(t,x) 1+x;
 g = @(t,x) ones(1,length(x));
 be = @(t,x) -x.^2./(1+t^2);
-ga = 0.125;
+ga = 0.5;
 m = 1;
 % initial distribution
 u0 = (4/pi).*atan(exp(7.*x));
@@ -93,8 +93,10 @@ end
 
 
 %% plotting
+
 figure(14040201);
 clf;
+subplot(221);
 plot(x,u0,'r','LineWidth',2);
 hold on;
 plot(x,u,'b','LineWidth',2);
@@ -102,8 +104,9 @@ xlabel('x','FontSize',16);
 ylabel('u','FontSize',16);
 legend({'t = 0','t = 3'});
 
-figure(14040301);
-clf;
+% figure(14040301);
+% clf;
+subplot(222);
 plot(x,uexact,'r','LineWidth',2);
 hold on;
 plot(x,u,'b','LineWidth',2);
@@ -111,15 +114,17 @@ xlabel('x','FontSize',16);
 ylabel('u','FontSize',16);
 legend({'asymptotically exact','numerical'});
 
-figure(14040401);
-clf;
+% figure(14040401);
+% clf;
+subplot(223);
 plot(x,uexact-u,'r','LineWidth',2);
 xlabel('x','FontSize',16);
 ylabel('error','FontSize',16);
 legend({'error of numerical solution'});
 
-figure(14040501);
-clf;
+% figure(14040501);
+% clf;
+subplot(224);
 plot(t,max_error,'r','LineWidth',2);
 xlabel('t','FontSize',16);
 ylabel('max error over time','FontSize',16);

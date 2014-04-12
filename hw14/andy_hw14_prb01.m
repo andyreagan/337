@@ -13,7 +13,7 @@ x = (0:h:1)';
 M = length(x); 
 t = (t0:k:tf)';
 % time dependent p,q
-p = ones(1,length(t));
+p = .75.*ones(1,length(t));
 q = pi*ones(1,length(t));
 % initial distribution
 u0 = sin(pi.*x);
