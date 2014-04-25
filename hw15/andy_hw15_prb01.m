@@ -32,7 +32,8 @@ u = u0;
 %% solving loop
 
 if pb
-    figure(14040101); % for watching solution
+    figure(15010101); % for watching solution
+    subplot(221);
     mesh(u0);
     xlabel('y','FontSize',16);
     ylabel('x','FontSize',16);
@@ -62,8 +63,10 @@ for i=2:length(t)
     u = unew;
     
     if pb
-        figure(14040101); % for watching solution
+        figure(15010101); % for watching solution
+        subplot(221);
         mesh(yy,xx,u);
+        xlim([0,ymax]);
         zlim([0,1]);
         xlabel('y','FontSize',16);
         ylabel('x','FontSize',16);
@@ -72,23 +75,42 @@ for i=2:length(t)
     end
 end
 
-
+title('intermediate solution');
 %% plotting
-figure(14040201);
-clf;
+% figure(15010201);
+% clf;
+figure(15010101); 
+subplot(222);
 mesh(yy,xx,u);
+xlim([0,ymax]);
 xlabel('y','FontSize',16);
 ylabel('x','FontSize',16);
 zlabel('u','FontSize',16);
+title('final solution');
 
 uexact = sin(pi.*xx).*sin(pi.*yy./ymax).*exp(-(1+1/ymax^2)*(pi^2*tf));
 
-% compare to exact
-figure(14040301);
-clf;
-mesh(yy,xx,uexact-u);
+% plot exact
+% figure(15010301);
+% clf;
+figure(15010101); 
+subplot(223);
+mesh(yy,xx,uexact);
+xlim([0,ymax]);
 xlabel('y','FontSize',16);
 ylabel('x','FontSize',16);
 zlabel('u','FontSize',16);
+title('exact');
 
+% compare to exact
+% figure(15010301);
+% clf;
+figure(15010101); 
+subplot(224);
+mesh(yy,xx,abs(uexact-u));
+xlim([0,ymax]);
+xlabel('y','FontSize',16);
+ylabel('x','FontSize',16);
+zlabel('u','FontSize',16);
+title('error');
 

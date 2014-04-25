@@ -1,7 +1,6 @@
-% HW15 Problem 8
+% HW15 Problem 8: no plots, no output (for testing speed)
 %
 % Solve the 2D IBVP using Peaceman-Rachford ADI method
-% A coding bonanza unfolds below
 
 %% parameters
 t0 = 0.0;
@@ -38,7 +37,7 @@ u = u0;
 ustar = zeros(N,M);
 
 for i=2:length(t)
-    disp(t(i));
+    % disp(t(i));
     % update
     % note that the index is (y,x)
     % such that (1:end-2,2:end-1) grabs from 0 boundary in y

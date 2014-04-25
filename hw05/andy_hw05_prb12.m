@@ -10,7 +10,7 @@ t0 = 0; tmax = 500;
 ecc = 0.6;
 y0 = [1-ecc;0;0;-sqrt((1+ecc)/(1-ecc))];
 
-h = 0.1;
+h = 0.005;
 tvec = t0:h:tmax;
 
 % solve with verlet-1
