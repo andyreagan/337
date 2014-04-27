@@ -33,6 +33,9 @@ B = spdiags(-2*ones(N-2,1),0,N-2,N-2)+...
     spdiags([ones(N-3,1);0],-1,N-2,N-2)+...
     spdiags([0;ones(N-3,1)],1,N-2,N-2);
 
+A1 = (speye(M-2)-r/2.*A;
+B1 = (speye(N-2)-r/2.*B;
+
 %% solving loop
 
 % first set the size of new matrices
@@ -46,7 +49,7 @@ for i=2:length(t)
     % such that (1:end-2,2:end-1) grabs from 0 boundary in y
     
     % solve column by column
-    ustar(2:end-1,2:end-1) = ((speye(M-2)-r/2.*A)\...
+    ustar(2:end-1,2:end-1) = (A1)\...
           (u(2:end-1,2:end-1)'+r/2.*(u(3:end,2:end-1)'-2.*u(2:end-1,2:end-1)'+u(1:end-2,2:end-1)')))';
     % ustar(:,1) = g00(t(i));
     % ustar(:,end) = g10(t(i));
@@ -54,7 +57,7 @@ for i=2:length(t)
     % ustar(end,:) = g11(t(i));
     
     % solve column by column
-    u(2:end-1,2:end-1) = ((speye(N-2)-r/2.*B)\...
+    u(2:end-1,2:end-1) = (B1)\...
         (ustar(2:end-1,2:end-1)+r/2.*(ustar(2:end-1,3:end)-2.*ustar(2:end-1,2:end-1)+ustar(2:end-1,1:end-2))));
     % unew(:,1) = g00(t(i));
     % unew(:,end) = g10(t(i));

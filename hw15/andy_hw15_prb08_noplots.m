@@ -32,6 +32,9 @@ B = spdiags(-2*ones(N-2,1),0,N-2,N-2)+...
     spdiags([ones(N-3,1);0],-1,N-2,N-2)+...
     spdiags([0;ones(N-3,1)],1,N-2,N-2);
 
+A1 = (speye(M-2)-r/2.*A);
+B1 = (speye(N-2)-r/2.*B);
+
 %% solving loop
 u = u0;
 ustar = zeros(N,M);
@@ -44,7 +47,7 @@ for i=2:length(t)
     
     % solve column by column
     for ell=2:N-1
-        ustar(ell,2:end-1) = (speye(M-2)-r/2.*A)\...
+        ustar(ell,2:end-1) = A1\...
             (u(ell,2:end-1)'+r/2.*(u(ell+1,2:end-1)'-2.*u(ell,2:end-1)'+u(ell-1,2:end-1)'));
     end
     % ustar(:,1) = g00(t(i));
@@ -54,7 +57,7 @@ for i=2:length(t)
     
     % solve column by column
     for m=2:M-1
-        u(2:end-1,m) = (speye(N-2)-r/2.*B)\...
+        u(2:end-1,m) = B1\...
             (ustar(2:end-1,m)+r/2.*(ustar(2:end-1,m+1)-2.*ustar(2:end-1,m)+ustar(2:end-1,m-1)));
     end
     % unew(:,1) = g00(t(i));

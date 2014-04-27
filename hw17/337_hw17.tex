@@ -65,8 +65,23 @@ escapeinside={\%*}{*)}
 
 \begin{enumerate}
 
-\item 
+\item We solve using the method from the notes.
 
+What we observe is a shock that moves to the right.
+This movement is expected since the initial disturbance is positive, and therefore the characteristic is like $x-ct$ with $c$ positive.
+The solution becomes multi-valued for $t>t^*$, where $t*$ is somewhere just greater than 1/4, from our plot.
+This is not a phycially plausible situation, and as such our mathematical model has broken down.
+A physical analogy would be a piston pushing down on a pipe: here the piston moved too rapidly for the gas to be simply compressed, and the gas has formed a shock wave.
+This manifests itself as a discontinuity, which our equation does not model.
+%% example code insert
+\lstinputlisting[language=Matlab]{andy_hw17.m}
+
+%% example figure
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.85\textwidth]{andy_hw17_01.png}
+  \caption{Solution plotted for the specified times.}
+\end{figure}
 
 \end{enumerate}
 \end{document}
