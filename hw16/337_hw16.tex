@@ -65,9 +65,56 @@ escapeinside={\%*}{*)}
 
 \begin{enumerate}
 
-\item 
+\item I stick with MATLAB for this one, and the following code produces a plot with 6 stages of the evolution of the solution.
+I'll note that MATLAB's \verb|quad| fails to properly integrate the piecewise function, so I use \verb|integral| with the option \verb|ArrayValued| set to \verb|true|.
+
+Since the solution is supported at any $x$ that overlaps $[0,2]$ at time $t$, we have the solution is always supported by $[0,2]$.
+The solution is support $ct$ to the right of $2$, since the lower integration bound $(x-ct)$ will overlap, and similarly supported $ct$ to the left of 0.
+Therefore, the width of the support is $2ct+2$.
+
+\lstinputlisting[language=Matlab]{andy_hw16_prb01.m}
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=1.05\textwidth]{andy_hw16_prb01_03.png}
+   \caption{Six panels of evolution of the D'Alembert solution.
+   I observe three qualitatively different profiles.
+   Namely, in the first phase, the height and support of the solution are both growing.
+   When the height has reached 1, the solution attains a peak.
+   And when $t>1$, the solution remains with a plateau at $1$, and grows in width.
+   My code (above) plots the time evolution.}
+\end{figure}
+
+\clearpage
+\pagebreak
+\item Plugging 16.7 into 16.6 we have the two equations:
+\[ F(x) + G(x) = \phi (x) ~~~~~~~~~ -cF_x(x) + cG_x(x) = \psi (x) .\]
+Differentiating the first equation wrt $x$, these equations become
+\[ F_x(x) + G_x(x) = \phi _x(x) ~~~~~~~~~ -cF_x(x) + cG_x(x) = \psi (x) .\]
+Solving the first for $F$, and plugging into the second, we have:
+\begin{align*} -c\left ( \phi _x(x) - G_x(x) \right )  + cG_x(x) = \psi (x) \\
+-\phi _x(x) + G_x(x)  + G_x(x) = \f{1}{c}\psi (x) \\
+G_x(x) = \f{1}{2c}\psi (x) + \f{1}{2} \phi _x (x)\\
+G(x) = \f{1}{2c}\int _{-\infty} ^{x} \psi (s) ds + \f{1}{2} \phi (x)\end{align*}
+where in the last step we have integrated from $-\infty$ to $x$, applied the Fundamental Theorem of Calculus, and rely upon the assumption that there no disturbance coming in from $x= -\infty$, such that $G(-\infty) = \phi(-\infty) = 0$.
+
+Similarly, we can solve for $F$:
+\begin{align*} c\left ( \phi _x(x) - F_x(x) \right )  - cF_x(x) = \psi (x) \\
+\phi _x(x) - F_x(x)  - F_x(x) = \f{1}{c}\psi (x) \\
+F_x(x) = -\f{1}{2c}\psi (x) + \f{1}{2} \phi _x (x)\\
+F(x) = -\f{1}{2c}\int _{-\infty} ^{x} \psi (s) ds + \f{1}{2} \phi (x)\end{align*}
 
 
+This verifies Eq (16.28a).
+Simply evaluating $G$ and $F$ at $(x\pm ct)$ , respectively, we have:
+\begin{align*} F(x-ct) = -\f{1}{2c}\int _{-\infty} ^{x-ct} \psi (s) ds + \f{1}{2} \phi (x-ct)~~~~~~~~~~G(x+ct) = \f{1}{2c}\int _{-\infty} ^{x+ct} \psi (s) ds + \f{1}{2} \phi (x+ct)\end{align*}
+which verifies Eq (16.28b).
+
+Finally, we plug the above (16.28b) into Eq (16.6) and we have
+\begin{align*} u(x,t) &= -\f{1}{2c}\int _{-\infty} ^{x-ct} \psi (s) ds + \f{1}{2} \phi (x-ct) +  \f{1}{2c}\int _{-\infty} ^{x+ct} \psi (s) ds + \f{1}{2} \phi (x+ct)\\
+&= \f{1}{2} \left ( \phi (x-ct)  + \phi (x+ct) \right ) +  \f{1}{2c}\int _{x-ct} ^{x+ct} \psi (s) ds\end{align*}
+where we have cancelled the overlapping portions of the integral (formally, splitting the integral to $x+ct$ into the overlapping and non-overlapping parts, then cancelling).
+This verifies Eq (16.8).
 \end{enumerate}
 \end{document}
 
