@@ -40,7 +40,7 @@ main(int argc, char **argv)
 
 	 if(dstep < (double)0.0) { direction = -1;}
 	 do  {
-		 printf("%g %g %g %g %g\n",(double)xx[0],(double)xx[1],(double)xx[2],(double)xx[3],(double)startT);
+		 printf("%.15f %.15f %.15f %.15f %.15f\n",(double)xx[0],(double)xx[1],(double)xx[2],(double)xx[3],(double)startT);
 
 		 itmp = taylor_step_tbp( &startT, xx, direction, 1, log10tolerance, log10rtolerance, &stopT, &nextT, &order);
 	     } while(itmp == 0); /* while */ 
