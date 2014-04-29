@@ -145,7 +145,7 @@ In line with the goals of \cite{bischof2000computing}, we seek to evaluate deriv
 Handcoding, divided-difference approximations, and symbolic manipulators fall short with respect to the previously mentioned criteria. The main drawbacks of divided-difference approximations are their numerical unpredictability and their computational cost. 
 In contrast, both the handcoding and symbolic approaches suffer from a lack of scalability and require considerable human effort \cite{bischof2000computing}.
 
-To simplify the discussion, I adopt the notation of \cite{taylor1.4}.
+To simplify the discussion, I adopt the notation of \cite{jorba2005software}.
 If $a : t \in I \subset \RR \to \RR$ is a smooth function, denote its normalized $n$-th derivative to the value
 \[ a^{[n]} (t) = \f{1}{n!} a ^{(n)} (t) .\]
 Assume now that $a(t) = F(b(t),c(t))$ and that we know the values of $b^{[j]} (t)$ and $c^{[j]} (t)$, $j= 0,\ldots, n$ for a given $t$.
@@ -173,7 +173,7 @@ I will prove the following on the board:
 I will prove this on the board as well.
 
 \subsection{Short Example}
-I base my example on that of \cite{taylor1.4}, and apply the rules of Proposition \ref{pr:mainprop} to the Van der Pol equation:
+I base my example on that of \cite{jorba2005software}, and apply the rules of Proposition \ref{pr:mainprop} to the Van der Pol equation:
 \begin{align*} x' &= y\\
 y' &= (1-x^2)y -x \end{align*}
 We decompose this function in the following elementary operations:
@@ -198,19 +198,116 @@ u_6^{[n]}(t) &= u_5^{[n]}(t) - u_1^{[n]}(t)\\
 x^{[n+1]}(t) &= \f{1}{n+1}u_2^{[n]}(t)\\
 y^{[n+1]}(t) &= \f{1}{n+1}u_6^{[n]}(t)\end{align*}
 
+\subsection{High accuracy computations}
+
+To achieve a given level of accuracy, we can choose both the step size $h$ and the order $p$.
+Of course, we need to be cognizant of the radius of covergence of the power series we create and the effect that this has on the stability of the step.
+Since we can control both order and step size, we attempt the dual goals of the desired accuracy and efficient computation.
+
 
 
 \pagebreak
 \section{Using Taylor 1.4}
 
+Taylor 1.4 is a package that is specifically designed to use AD to integrate systems of equations.
+The documentation for the package is excellent, in both an extended paper \cite{jorba2005software}, and an online appendix (\url{http://www.ma.utexas.edu/users/mzou/taylor/manual/manual.html}).
+I downloaded and built the software using \verb|gcc|, specifically
+
+\lstinputlisting[language=Bash]{code/Taylor1.4/gccv.txt}
+
+I specify the Kepler two-body problem as
+
+\lstinputlisting[language=Bash]{code/Taylor1.4/tbp.in}
+
+and build the executable with
+
+\lstinputlisting[language=Bash]{code/Taylor1.4/make.sh}
+
 \pagebreak
 \section{Comparison to Symplectic Methods}
+
+We perform tests with the Kepler two-body problem (Eq (5.30) of the notes):
+  \[ q'' = - \f{q}{(q^2+r^2)^{3/2}} ~~,~~~~~r'' = - \f{r}{(q^2+r^2)^{3/2}};  \]
+where $q$ and $r$ are the cartesian coordinates of a certain radius vector relative to the center of mass of the bodies.
+
+Although we could solve this directly, we first put the problem into a system of four ODE's:
+\begin{align*} z' &= -\f{q}{(q^2+r^2)^{3/2}} \\
+               w' &= - \f{r}{(q^2+r^2)^{3/2}} \\
+               q' &= z\\
+               r' &= w.\end{align*}
+
+For comparison, we apply the Verlet-1 and -2 methods to the Kepler two-body problem.
+We start with $h = 0.1$ and $t_{\max} =  500$, and decrease $h$ to preserve the Runge-Lenz vector.
+As the initial condition, use
+\[ q(0) = 1-\text{ecc}, ~~~r(0) = 0,~~~Q(0) = 0, ~~~ R(0) = \sqrt{\f{1+\text{ecc}}{1-\text{ecc}}} ~~~\text{for}~ \text{ecc} = 0.6,\]
+which corresponds to the exact solution being an elipse with eccentricity 0.6.
+As we observed in HW5, Bonus 2, the Verlet method loses the orientation of the orbit for large $h$.
+Here are three plots for varying $h$, starting at $0.1$ down the $0.005$, where the orbit appears to stick around.
+I didn't spend a long time optimizing the MATLAB code, and it takes quite a long time to run (without making plots):
+\lstinputlisting[language=Bash]{code/MATLAB/outputtime.txt}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{code/MATLAB/andy_hw12_01.png}
+  \caption{The numerical solution for $h=0.1$.
+  In the top left panel we plot the Hamiltonian, top right the angular momentum, bottom left the Runge-Lenz vector, and bottom right the phase space plot.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{code/MATLAB/andy_hw12_02.png}
+  \caption{The numerical solution for $h=0.01$.
+  In the top left panel we plot the Hamiltonian, top right the angular momentum, bottom left the Runge-Lenz vector, and bottom right the phase space plot.}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.75\textwidth]{code/MATLAB/andy_hw12_03.png}
+  \caption{The numerical solution for $h=0.001$.
+  In the top left panel we plot the Hamiltonian, top right the angular momentum, bottom left the Runge-Lenz vector, and bottom right the phase space plot.}
+\end{figure}
+
+\clearpage
+\pagebreak
+%% Loading the output files from the ANSI C routine generated by Taylor 1.4 into MATLAB is difficult.
+To visualize the output of the ANSI C routine generated by Taylor 1.4 we import the data file into Python, and plot the orbit.
+The calculation is nearly immediate with Taylor 1.4:
+\lstinputlisting[language=Bash]{code/Taylor1.4/outputtime.txt}
+
+The plot of this solution is:
+\begin{figure}[h!]
+  \centering
+    \includegraphics[width=0.85\textwidth]{code/Taylor1.4/figures/test.png}
+  \caption{Solution with the Taylor method.}
+\end{figure}
+
+Directly comparing the endpoint of the calculation, for MATLAB we have:
+\lstinputlisting[language=Bash]{code/MATLAB/end.txt}
+and from Taylor we have:
+\lstinputlisting[language=Bash]{code/Taylor1.4/end.txt}
+
+Of course, we can't really be sure that this means that the solutions are the same, because the orbit is periodic (one could have simply lapped the other!).
 
 \pagebreak
 \section{Conclusions}
 
+It took a long time to figure out how to get the code to run, again confirming that the process is not automatic, however the speed with which the high accuracy simulation can be coded and computed is impressive.
+As AD continues to gain popularity, the use cases will grow beyond those in traditional optimization.
+With the ability to solve equations with arbitrary accuracy (extended precision arithmetic), more research may find applications for the Taylor method.
+
+
+
 
 \pagebreak
+\nocite{bischof2000computing}
+\nocite{gay2006semiautomatic}
+\nocite{griewank2003mathematical}
+\nocite{pryce2008fast}
+\nocite{barrio2005performance}
+\nocite{jorba2005software}
+\nocite{verma2000introduction}
+\nocite{walther2012getting}
+
 \bibliographystyle{chicago}
 \bibliography{337_final}
 

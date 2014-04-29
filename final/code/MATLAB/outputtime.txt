@@ -1,0 +1,2 @@
+>> tic; andy_hw05_prb12; toc;
+Elapsed time is 16.450040 seconds.
