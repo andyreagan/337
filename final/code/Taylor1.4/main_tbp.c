@@ -22,24 +22,17 @@ main(int argc, char **argv)
 	 MakeMyFloatA(myFloatZero, 0);
 
 	 /* assign initials */
-	 fprintf(stderr,"Enter Initial xx[0]: "); 
-	 scanf("%le", &ftmp);	 MakeMyFloatA(xx[0], (double)ftmp );
-	 fprintf(stderr,"Enter Initial xx[1]: "); 
-	 scanf("%le", &ftmp);	 MakeMyFloatA(xx[1], (double)ftmp );
-	 fprintf(stderr,"Enter Initial xx[2]: "); 
-	 scanf("%le", &ftmp);	 MakeMyFloatA(xx[2], (double)ftmp );
-	 fprintf(stderr,"Enter Initial xx[3]: "); 
-	 scanf("%le", &ftmp);	 MakeMyFloatA(xx[3], (double)ftmp );
-	 fprintf(stderr,"Enter start time: "); 
-	 scanf("%le", &dstep);	 MakeMyFloatA(startT, dstep);
-	 fprintf(stderr,"Enter stop time: "); 
-	 scanf("%le", &dstep);	 MakeMyFloatA(stopT, dstep);
+	 MakeMyFloatC(xx[0],"0.4", (double)0.4);
+	 MakeMyFloatC(xx[1],"0", (double)0);
+	 MakeMyFloatC(xx[2],"0", (double)0);
+	 MakeMyFloatC(xx[3],"-2", (double)-2);
+	 MakeMyFloatC(stopT, "500", (double)(500));
+	 MakeMyFloatC(startT, "0", (double)(0));
 	 dstep=0.001; /* only nedeed when step_ctrl_method==0 (see manual) */
 	 MakeMyFloatA(nextT, (double)dstep);
-	 fprintf(stderr,"Enter absolute error tolerance: "); 
-	 scanf("%le", &tolerance);
-	 fprintf(stderr,"Enter relative error tolerance: "); 
-	 scanf("%le", &rtolerance);
+	 tolerance = (double)(1e-17);
+	 rtolerance = (double)(1e-17);
+
 	 log10tolerance  = log10(tolerance);
 	 log10rtolerance = log10(rtolerance);
 

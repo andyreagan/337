@@ -6,3 +6,11 @@ diff(x1, t)= x3;
 diff(x2, t)= x4;
 diff(x3, t)= -x1/((x1^2+x2^2)^(3/2));
 diff(x4, t)= -x2/((x1^2+x2^2)^(3/2));
+
+ecc = 0.6; /* 1-ecc, 0, 0, -sqrt((1+ecc)/(1-ecc)); */
+
+initial_values= 0.4, 0, 0, -2;
+start_time= 0.0;
+stop_time = 500.0;
+absolute_error_tolerance = 0.1e-16;
+relative_error_tolerance = 0.1e-16;	

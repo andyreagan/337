@@ -618,11 +618,11 @@ MY_FLOAT **taylor_coefficients_tbpA(MY_FLOAT t, MY_FLOAT *x, int order, int rfla
     	 for(_jz_j = 0, _jz_k = 0; _jz_j < 12 ;  _jz_j++, _jz_k += order+1) { _jz_jet[_jz_j] =& (_jz_save[_jz_k]); }
 
     	 /* True constants, initialized only once. */
-	 /* const: i_016=2 */
+	 /* const: i_025=2 */
 	 _jz_ivars[0]=2;
-	 /* const: i_018=3 */
+	 /* const: i_027=3 */
 	 _jz_ivars[1]=3;
-	 /* div: c_028=(i_018/i_016) */
+	 /* div: c_051=(i_027/i_025) */
 	 DivideMyFloatA(_jz_cvars[0], MakeMyFloatB(_jz_uvar1,(double)_jz_ivars[1]), MakeMyFloatB(_jz_tvar1,(double)_jz_ivars[0]));
     }
 
@@ -640,9 +640,9 @@ MY_FLOAT **taylor_coefficients_tbpA(MY_FLOAT t, MY_FLOAT *x, int order, int rfla
 	 AssignMyFloat(_jz_jet[1][0], x[1]);
 	 AssignMyFloat(_jz_jet[2][0], x[2]);
 	 AssignMyFloat(_jz_jet[3][0], x[3]);
-	 /* negate: v_024=(-v_010) */
+	 /* negate: v_047=(-v_019) */
 	 NegateMyFloatA(_jz_jet[4][0],_jz_jet[0][0]);
-	 /* exponentiation: v_025=(v_010^i_016) */
+	 /* exponentiation: v_048=(v_019^i_025) */
 		  /* integer exponent or half integer */
 		 AssignMyFloat(_jz_svar5,_jz_jet[0][0]);
 		 { int n=2, m, mn=0; 
@@ -665,7 +665,7 @@ MY_FLOAT **taylor_coefficients_tbpA(MY_FLOAT t, MY_FLOAT *x, int order, int rfla
 			   break; 
 			  }
 		 } 
-	 /* exponentiation: v_026=(v_011^i_016) */
+	 /* exponentiation: v_049=(v_020^i_025) */
 		  /* integer exponent or half integer */
 		 AssignMyFloat(_jz_svar5,_jz_jet[1][0]);
 		 { int n=2, m, mn=0; 
@@ -688,15 +688,15 @@ MY_FLOAT **taylor_coefficients_tbpA(MY_FLOAT t, MY_FLOAT *x, int order, int rfla
 			   break; 
 			  }
 		 } 
-	 /* plus: v_027=(v_025+v_026) */
+	 /* plus: v_050=(v_048+v_049) */
 	 AddMyFloatA(_jz_jet[7][0], _jz_jet[5][0], _jz_jet[6][0]);
-	 /* exponentiation: v_029=(v_027^c_028) */
+	 /* exponentiation: v_052=(v_050^c_051) */
 	 ExponentiateMyFloatA(_jz_jet[8][0], _jz_jet[7][0], _jz_cvars[0]);
-	 /* div: v_030=(v_024/v_029) */
+	 /* div: v_053=(v_047/v_052) */
 	 DivideMyFloatA(_jz_jet[9][0], _jz_jet[4][0], _jz_jet[8][0]);
-	 /* negate: v_031=(-v_011) */
+	 /* negate: v_054=(-v_020) */
 	 NegateMyFloatA(_jz_jet[10][0],_jz_jet[1][0]);
-	 /* div: v_037=(v_031/v_029) */
+	 /* div: v_060=(v_054/v_052) */
 	 DivideMyFloatA(_jz_jet[11][0], _jz_jet[10][0], _jz_jet[8][0]);
 
 	 /* the first derivative of state variables */
@@ -713,9 +713,9 @@ MY_FLOAT **taylor_coefficients_tbpA(MY_FLOAT t, MY_FLOAT *x, int order, int rfla
 	 /* compute the kth order derivatives of all vars */
 	 for(_jz_k = _jz_lastOrder; _jz_k < order; _jz_k++) {
 		 /* derivative for tmp variables */
-		 /* negation: v_024=(-v_010) */
+		 /* negation: v_047=(-v_019) */
 		 NegateMyFloatA(_jz_jet[4][_jz_k], _jz_jet[0][_jz_k]);
-		 /* exponentiation: v_025=(v_010^i_016) */
+		 /* exponentiation: v_048=(v_019^i_025) */
 		 { /* exponentiation */
 				 /* expr^2 */ 
 			 static MY_FLOAT tmp1, tmp2, tmp;
@@ -736,7 +736,7 @@ MY_FLOAT **taylor_coefficients_tbpA(MY_FLOAT t, MY_FLOAT *x, int order, int rfla
 			     AssignMyFloat(_jz_jet[5][_jz_k], tmp1);
 			 }
 		}
-		 /* exponentiation: v_026=(v_011^i_016) */
+		 /* exponentiation: v_049=(v_020^i_025) */
 		 { /* exponentiation */
 				 /* expr^2 */ 
 			 static MY_FLOAT tmp1, tmp2, tmp;
@@ -757,9 +757,9 @@ MY_FLOAT **taylor_coefficients_tbpA(MY_FLOAT t, MY_FLOAT *x, int order, int rfla
 			     AssignMyFloat(_jz_jet[6][_jz_k], tmp1);
 			 }
 		}
-		 /* plus: v_027=(v_025+v_026) */
+		 /* plus: v_050=(v_048+v_049) */
 		 AddMyFloatA(_jz_jet[7][_jz_k], _jz_jet[5][_jz_k],_jz_jet[6][_jz_k]);
-		 /* exponentiation: v_029=(v_027^c_028) */
+		 /* exponentiation: v_052=(v_050^c_051) */
 		 { /* exponentiation */
 				 /* expr^(3/2)/ */ 
 			 int  ppk=(3)*_jz_k, qqk=(2)*_jz_k, pq=5;
@@ -781,7 +781,7 @@ MY_FLOAT **taylor_coefficients_tbpA(MY_FLOAT t, MY_FLOAT *x, int order, int rfla
 			 MultiplyMyFloatA(tmp1, _jz_jet[7][0], tmp3);
 			 DivideMyFloatA(_jz_jet[8][_jz_k], tmp, tmp1);
 		}
-		 /* div: v_030=(v_024/v_029) */
+		 /* div: v_053=(v_047/v_052) */
 		 { /* division */
 			 static MY_FLOAT tmp1, tmp2, tmp;
 			 if(_jz_initialized==0) { InitMyFloat(tmp1);InitMyFloat(tmp2); InitMyFloat(tmp);}
@@ -795,9 +795,9 @@ MY_FLOAT **taylor_coefficients_tbpA(MY_FLOAT t, MY_FLOAT *x, int order, int rfla
 			 SubstractMyFloatA(tmp, _jz_jet[4][_jz_k], tmp2);
 			 DivideMyFloatA(_jz_jet[9][_jz_k], tmp, _jz_jet[8][0]);
 		 }
-		 /* negation: v_031=(-v_011) */
+		 /* negation: v_054=(-v_020) */
 		 NegateMyFloatA(_jz_jet[10][_jz_k], _jz_jet[1][_jz_k]);
-		 /* div: v_037=(v_031/v_029) */
+		 /* div: v_060=(v_054/v_052) */
 		 { /* division */
 			 static MY_FLOAT tmp1, tmp2, tmp;
 			 if(_jz_initialized==0) { InitMyFloat(tmp1);InitMyFloat(tmp2); InitMyFloat(tmp);}
@@ -842,30 +842,30 @@ MY_FLOAT **taylor_coefficients_tbp(MY_FLOAT t, MY_FLOAT *x, int order)
 	    (12 + 0) vars, (1 + 0) cvars and (2 + 0) ivars 
 =======                                                                      ======
 ===================================================================================
-	v_010 (state variable)
-	v_011 (state variable)
-	v_012 (state variable)
-	v_013 (state variable)
-	v_024 = (-v_010)                                 (4 0)
-	i_016 = 2                                        (0 0) (a number)
-	v_025 = (v_010^i_016)                            (5 0)
-	v_026 = (v_011^i_016)                            (6 0)
-	v_027 = (v_025+v_026)                            (7 0)
-	i_018 = 3                                        (1 0) (a number)
-	c_028 = (i_018/i_016)                            (0 0)
-	v_029 = (v_027^c_028)                            (8 0)
-	v_030 = (v_024/v_029)                            (9 0)
-	v_031 = (-v_011)                                 (10 0)
-	v_037 = (v_031/v_029)                            (11 0)
+	v_019 (state variable)
+	v_020 (state variable)
+	v_021 (state variable)
+	v_022 (state variable)
+	v_047 = (-v_019)                                 (4 0)
+	i_025 = 2                                        (0 0) (a number)
+	v_048 = (v_019^i_025)                            (5 0)
+	v_049 = (v_020^i_025)                            (6 0)
+	v_050 = (v_048+v_049)                            (7 0)
+	i_027 = 3                                        (1 0) (a number)
+	c_051 = (i_027/i_025)                            (0 0)
+	v_052 = (v_050^c_051)                            (8 0)
+	v_053 = (v_047/v_052)                            (9 0)
+	v_054 = (-v_020)                                 (10 0)
+	v_060 = (v_054/v_052)                            (11 0)
 ===================================================================
 =========                                                  ========
 =========          Differential Equations                  ========
 =========                                                  ========
 ===================================================================
 
-	 v_010'=v_012
-	 v_011'=v_013
-	 v_012'=v_030
-	 v_013'=v_037
+	 v_019'=v_021
+	 v_020'=v_022
+	 v_021'=v_053
+	 v_022'=v_060
 */
 /*************** END  END  END ***************************************/
