@@ -2,6 +2,9 @@
 \usepackage{amsmath,amsthm,amssymb,fullpage,graphicx,hyperref}
 \usepackage{listings,color,setspace}
 \usepackage{titling}
+\usepackage{setspace}
+%% \usepackage{cite}
+\usepackage{natbib}
 \newcommand{\subtitle}[1]{%
   \posttitle{%
     \par\end{center}
@@ -38,6 +41,25 @@
      \newcommand{\bvec}[1]{\vec{ {\bf #1 } }}
      \newcommand{\oh}[1]{O(h^{{#1}})}
 
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+%% \newenvironment{proof}[1][Proof]{\begin{trivlist}
+%% \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%% \newenvironment{definition}[1][Definition]{\begin{trivlist}
+%% \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+%% \newenvironment{example}[1][Example]{\begin{trivlist}
+%% \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+%% \newcommand{\qed}{\nobreak \ifvmode \relax \else
+%%       \ifdim\lastskip<1.5em \hskip-\lastskip
+%%       \hskip1.5em plus0em minus0.5em \fi \nobreak
+%%       \vrule height0.75em width0.5em depth0.25em\fi}
+
 \lstset{language=MATLAB,
 basicstyle=\ttfamily\scriptsize\singlespacing,
 keywordstyle=\color{black},
@@ -55,6 +77,8 @@ breakatwhitespace=false,    %% sets if automatic breaks should only happen at wh
 escapeinside={\%*}{*)} 
 }
 
+\linespread{1.5}
+
 %% example code insert
 %% \lstinputlisting[language=Matlab]{andy_hw12_prb01.m}
 
@@ -70,8 +94,125 @@ escapeinside={\%*}{*)}
 %% \pagebreak
 
 \begin{document}
+% \vspace{1cm}
+
 \maketitle
 
+\pagebreak
+\tableofcontents
+
+\pagebreak
+\section{Introduction}
+
+The key question that we attempt to answer when modeling real-world phenomena is: how sensitive is the output of model with respect to the input values and parameters?
+Most of the methods that we have developed in the class rely on finite differences to answer this question, and hence to make accurate predictions.
+We judge the accuracy of these methods based on how well they approximate the Taylor series of the given function, giving rise to their local truncation error.
+Accuracy is not the sole desired property of a numerical scheme, but once convergence to the true solution can be achieved, we seek the most efficient and most accurate determination of this solution.
+
+A promising tool to answer the above question, with arbitrary accuracy, support for extended precision arithmetic, and the ability to apply to comlex, large-scale models is Algorithmic Differentiation. 
+My presentation today outlines the basics of Algorithmic Differentation (AD) technology.
+Some of the literature refers to AD as Automatic Differentiation, but in my experience the differentiation is still far from automatic.
+
+The core functionality of AD relies upon the fact that any computer program can be broken down into a sequence of elementary operations, for which the derivative can be computed easily.
+One limitation of this approach is that we are restricted to a range of functions that can be broken down this way, although we will see that this is not as limiting in practical implementations.
+There are many ways to potentially compute derivatives algorithmically, and we will discuss source code transformation, derivative compilers, and operator overloading techniques.
+
+\subsection{Taylor Method}
+
+Going back to Day 1, we are interesting in solving problems of the form of Eq (0.1) of the notes:
+\[ y'(x) = f(x,y) .\]
+Instead of taking the finite difference, we next consider the Taylor series expansion:
+\begin{align*} f(x,y) = f(x_0,y_0) &+ \left (\Delta x f_x (x_0,y_0)+ \Delta y f_y (x_0,y_0)\right ) \\
+&+ \f{1}{2!} \left ( \left ( \Delta x\right ) ^2 f_{xx} (x_0,y_0) + 2\Delta x \Delta y f_{xy} (x_0,y_0) + \left ( \Delta y \right ) ^2 f_{yy} (x_0,y_0) \right ) + \ldots \end{align*}
+
+The computation of the forms of $f_x,f_y$ and so forth requires significantly effort from a computer, and will typically be cumbersome.
+Therefore, evaluating them will be slow.
+Algorithm differentiation overcomes this difficulty.
+We will discuss this in more detail in the following section.
+
+\pagebreak
+\section{Algorithmic Differentiation Basics}
+
+First I will note other possibilities for computing derivatives and jacobians, namely: symbolic differentiation, hand-coding, and divided differences.
+In line with the goals of \cite{bischof2000computing}, we seek to evaluate derivatives in a way that has the following properties:
+\begin{itemize}
+\item {\bf Reliability} The computed derivatives should be accurate to the IEEE floating point arithmetic of the computer.
+\item {\bf Computational Cost} Computing the derivatives is often the main computational cost. The amount of memory and operations should be bounded.
+\item {\bf Scalability} The approach should give correct results for a 1-line formula as well as a 100,000-line code.
+\item {\bf Human Effort} A user should not spend much time preparing a code for differentiation, in particular where code changes frequently.
+\end{itemize}
+
+Handcoding, divided-difference approximations, and symbolic manipulators fall short with respect to the previously mentioned criteria. The main drawbacks of divided-difference approximations are their numerical unpredictability and their computational cost. 
+In contrast, both the handcoding and symbolic approaches suffer from a lack of scalability and require considerable human effort \cite{bischof2000computing}.
+
+To simplify the discussion, I adopt the notation of \cite{taylor1.4}.
+If $a : t \in I \subset \RR \to \RR$ is a smooth function, denote its normalized $n$-th derivative to the value
+\[ a^{[n]} (t) = \f{1}{n!} a ^{(n)} (t) .\]
+Assume now that $a(t) = F(b(t),c(t))$ and that we know the values of $b^{[j]} (t)$ and $c^{[j]} (t)$, $j= 0,\ldots, n$ for a given $t$.
+I will prove the following on the board:
+\begin{proposition} If the function $a$ and $b$ are of class $C^n$, and $\alpha \in \{ \RR - 0 \}$, we have
+\begin{enumerate}
+\item If $a(t) = b(t) \pm c(t) $, then $a^{[n]}(t) = b^{[t]}(t) \pm c^{[t]}(t).$
+\item If $a(t) = b(t) c(t) $, then $a^{[n]}(t) = \sum _{j=0} ^n b^{[n-j]}(t) c^{[j]}(t).$
+\item If $a(t) = \f{b(t)}{ c(t)} $, then $a^{[n]}(t) =  \f{1}{ c^{[0]}(t)} \left [ b^{[n]}(t) - \sum _{j=1} ^n c^{[j]}(t) a^{[n-j]}(t) \right ].$
+\item If $a(t) = b(t)^{\alpha } $, then $a^{[n]}(t) =  \f{1}{ nb^{[0]}(t)} \sum _{j=0} ^{n-1} \left ( n \alpha - j(\alpha +1 ) \right ) b^{[n-j]}(t) a^{[j]}(t).$
+\item If $a(t) = e^{b(t)}$, then $a^{[n]}(t) =  \f{1}{ n} \sum _{j=0} ^{n-1} \left ( n - j \right ) b^{[n-j]}(t) a^{[j]}(t).$
+\item If $a(t) = \ln b(t)$, then $a^{[n]}(t) =  \f{1}{ b^{[0]}(t)} \left [ n^{[n]} (t) - \f{1}{n} \sum _{j=1} ^{n-1} \left ( n - j \right ) b^{[j]}(t) a^{[n-j]}(t) \right ].$
+\item If $a(t) = \cos c(t)$ and $b(t) = \sin c(t)$, then 
+\[a^{[n]}(t) =  -\f{1}{ n} \sum _{j=1} ^{n} j b^{[n-j]}(t) c^{[j]}(t),~~~~b^{[n]}(t) =  \f{1}{ n} \sum _{j=1} ^{n} j a^{[n-j]}(t) c^{[j]}(t) .\]
+\end{enumerate}
+\label{pr:mainprop}
+\end{proposition}
+
+\begin{remark} It is possible to derive similar forumulas for other functions, line inverse trigonometric functions.
+\end{remark}
+
+\begin{corollary} The number of arithmetic operations to evaluate the normalized derivation of a function up to order $n$ is $O(n^2)$.
+\end{corollary}
+
+I will prove this on the board as well.
+
+\subsection{Short Example}
+I base my example on that of \cite{taylor1.4}, and apply the rules of Proposition \ref{pr:mainprop} to the Van der Pol equation:
+\begin{align*} x' &= y\\
+y' &= (1-x^2)y -x \end{align*}
+We decompose this function in the following elementary operations:
+\begin{align*}
+u_1 &= x\\
+u_2 &= y\\
+u_3 &= u_1u_1\\
+u_4 &= 1 - u_3\\
+u_5 &= u_2u_4\\
+u_6 &= u_5 - u_1\\
+x' &= u_2\\
+y' &= u_6\end{align*}
+
+And applying Proposition \ref{pr:mainprop} to the above, we have
+\begin{align*}
+u_1^{[n]}(t) &= x^{[n]}(t)\\
+u_2^{[n]}(t) &= y^{[n]}(t)\\
+u_3^{[n]}(t) &= \sum _{i=0} ^n u_1^{[n-i]}(t)u_1^{[i]}(t)\\
+u_4^{[n]}(t) &= 1 - u_3^{[n]}(t)\\
+u_5^{[n]}(t) &= \sum _{i=0} ^n u_2^{[n-i]}(t)u_4^{[i]}(t)\\
+u_6^{[n]}(t) &= u_5^{[n]}(t) - u_1^{[n]}(t)\\
+x^{[n+1]}(t) &= \f{1}{n+1}u_2^{[n]}(t)\\
+y^{[n+1]}(t) &= \f{1}{n+1}u_6^{[n]}(t)\end{align*}
+
+
+
+\pagebreak
+\section{Using Taylor 1.4}
+
+\pagebreak
+\section{Comparison to Symplectic Methods}
+
+\pagebreak
+\section{Conclusions}
+
+
+\pagebreak
+\bibliographystyle{chicago}
+\bibliography{337_final}
 
 \end{document}
 
