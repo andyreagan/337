@@ -26,6 +26,7 @@
      \def\e{\end }
      \def\Log{\text{Log} \,}
      \def\Re{\text{Re} \, }
+
      \newcommand{\pdiff}[2]{\frac{\partial #1}{\partial #2}}
      \newcommand{\partialdiff}[2]{\frac{\partial #1}{\partial #2}}
      \newcommand{\pdiffsq}[2]{\frac{\partial^2 #1}{{\partial #2}^2}}
@@ -38,6 +39,7 @@
      \newcommand{\tdiffsq}[2]{\mbox{d}^{2} #1/\mbox{d} {#2}^2}
      \newcommand{\tpdiff}[2]{\partial #1/\partial #2}
      \newcommand{\tpdiffsq}[2]{\partial^2 #1/\partial {#2}^2}
+
      \newcommand{\bvec}[1]{\vec{ {\bf #1 } }}
      \newcommand{\oh}[1]{O(h^{{#1}})}
 
@@ -286,7 +288,7 @@ Directly comparing the endpoint of the calculation, for MATLAB we have:
 and from Taylor we have:
 \lstinputlisting[language=Bash]{code/Taylor1.4/end.txt}
 
-Of course, we can't really be sure that this means that the solutions are the same, because the orbit is periodic (one could have simply lapped the other!).
+Of course, we can't really be sure that this means that the solutions are close, because the orbit is periodic (one could have simply lapped the other!).
 
 \pagebreak
 \section{Conclusions}
